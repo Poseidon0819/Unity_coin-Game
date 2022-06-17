@@ -46,6 +46,7 @@ namespace SurvivalEngine
                 {
                     BinaryFormatter bf = new BinaryFormatter();
                     string fullpath = Application.persistentDataPath + "/" + filename + extension;
+                    Debug.LogError(fullpath);
                     file = File.Create(fullpath);
                     bf.Serialize(file, data);
                     file.Close();
