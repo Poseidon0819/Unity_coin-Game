@@ -37,6 +37,47 @@ namespace SurvivalEngine
         public Dictionary<string, PlayerPetData> pets = new Dictionary<string, PlayerPetData>();
 
         public PlayerCharacterData(int id) { player_id = id; }
+        public object GetSaveData()
+        {
+            Dictionary<string, object> sendData = new Dictionary<string, object>();
+            sendData["player_id"] = this.player_id;
+            List<float> posList = new List<float>();
+            posList.Add(this.position.x);
+            posList.Add(this.position.y);
+            posList.Add(this.position.z);
+            sendData["position"] = posList;
+            sendData["xp"] = this.xp;
+            sendData["gold"] = this.gold;
+            Dictionary<int, object> attData = new Dictionary<int, object>();
+            foreach(AttributeType type in this.attributes.Keys) {
+                attData[(int)type] = this.attributes[type];
+            }
+            sendData["attributes"] = attData;
+            Dictionary<int, object> timeBonusData = new Dictionary<int, object>();
+            foreach (BonusType type in this.timed_bonus_effects.Keys)
+            {
+                List<object> listData = new List<object>();
+                listData.Add((int)this.timed_bonus_effects[type].bonus);
+                listData.Add(this.timed_bonus_effects[type].time);
+                listData.Add(this.timed_bonus_effects[type].value);
+                timeBonusData[(int)type] = listData;
+            }
+            sendData["timed_bonus_effects"] = timeBonusData;
+            sendData["crafted_count"] = crafted_count;
+            sendData["kill_count"] = kill_count;
+            sendData["unlocked_ids"] = unlocked_ids;
+
+            Dictionary<string, object> petData = new Dictionary<string, object>();
+            foreach (string type in this.pets.Keys)
+            {
+                List<object> listData = new List<object>();
+                listData.Add(this.pets[type].pet_id);
+                listData.Add(this.pets[type].uid);
+                petData[type] = listData;
+            }
+            sendData["pets"] = pets;
+            return sendData;
+        }
 
         public void FixData()
         {

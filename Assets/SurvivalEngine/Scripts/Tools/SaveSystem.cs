@@ -54,6 +54,25 @@ namespace SurvivalEngine
                 catch (System.Exception e) { Debug.Log("Error Saving Data " + e); if (file != null) file.Close(); }
             }
         }
+        public static void SaveFile(string filename, string data)
+        {
+            if (IsValidFilename(filename))
+            {
+                FileStream file = null;
+                try
+                {
+                    BinaryFormatter bf = new BinaryFormatter();
+                    string fullpath = Application.persistentDataPath + "/" + filename + extension;
+                    Debug.LogError(fullpath);
+                    StreamWriter writer = new StreamWriter(fullpath, true);
+                    writer.WriteLine(data);
+                    // file = File.Create(fullpath);
+                    // bf.Serialize(file, data);
+                    // file.Close();
+                }
+                catch (System.Exception e) { Debug.Log("Error Saving Data " + e); if (file != null) file.Close(); }
+            }
+        }
 
         public static void DeleteFile(string filename)
         {

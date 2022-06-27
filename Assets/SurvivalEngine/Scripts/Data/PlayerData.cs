@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using MiniJSON;
 
 namespace SurvivalEngine
 {
@@ -14,6 +15,17 @@ namespace SurvivalEngine
         public Vector3Data pos;
         public int quantity;
         public float durability;
+        public object GetSaveData()
+        {
+            Dictionary<string, object> sendData = new Dictionary<string, object>();
+            sendData["uid"] = uid;
+            sendData["item_id"] = item_id;
+            sendData["scene"] = scene;
+            sendData["pos"] = pos.ToString();
+            sendData["quantity"] = quantity;
+            sendData["durability"] = durability;
+            return sendData;
+        }
     }
 
     [System.Serializable]
@@ -25,6 +37,17 @@ namespace SurvivalEngine
         public Vector3Data pos;
         public QuaternionData rot;
         public float durability;
+        public object GetSaveData()
+        {
+            Dictionary<string, object> sendData = new Dictionary<string, object>();
+            sendData["uid"] = uid;
+            sendData["construction_id"] = construction_id;
+            sendData["scene"] = scene;
+            sendData["pos"] = pos.ToString();
+            sendData["rot"] = rot.ToString();
+            sendData["durability"] = durability;
+            return sendData;
+        }
     }
 
     [System.Serializable]
@@ -36,6 +59,17 @@ namespace SurvivalEngine
         public Vector3Data pos;
         public QuaternionData rot;
         public int growth_stage;
+        public object GetSaveData()
+        {
+            Dictionary<string, object> sendData = new Dictionary<string, object>();
+            sendData["uid"] = uid;
+            sendData["plant_id"] = plant_id;
+            sendData["scene"] = scene;
+            sendData["pos"] = pos.ToString();
+            sendData["rot"] = rot.ToString();
+            sendData["growth_stage"] = growth_stage;
+            return sendData;
+        }
     }
 
     [System.Serializable]
@@ -46,6 +80,16 @@ namespace SurvivalEngine
         public string scene;
         public Vector3Data pos;
         public QuaternionData rot;
+        public object GetSaveData()
+        {
+            Dictionary<string, object> sendData = new Dictionary<string, object>();
+            sendData["uid"] = uid;
+            sendData["character_id"] = character_id;
+            sendData["scene"] = scene;
+            sendData["pos"] = pos.ToString();
+            sendData["rot"] = rot.ToString();
+            return sendData;
+        }
     }
 
     [System.Serializable]
@@ -57,6 +101,17 @@ namespace SurvivalEngine
         public Vector3Data pos;
         public QuaternionData rot;
         public float scale;
+        public object GetSaveData()
+        {
+            Dictionary<string, object> sendData = new Dictionary<string, object>();
+            sendData["id"] = id;
+            sendData["uid"] = uid;
+            sendData["scene"] = scene;
+            sendData["pos"] = pos.ToString();
+            sendData["rot"] = rot.ToString();
+            sendData["scale"] = scale;
+            return sendData;
+        }
     }
 
     [System.Serializable]
@@ -66,6 +121,15 @@ namespace SurvivalEngine
         public string scene;
         public Vector3Data pos;
         public QuaternionData rot;
+        public object GetSaveData()
+        {
+            Dictionary<string, object> sendData = new Dictionary<string, object>();
+            sendData["uid"] = uid;
+            sendData["scene"] = scene;
+            sendData["pos"] = pos.ToString();
+            sendData["rot"] = rot.ToString();
+            return sendData;
+        }
     }
 
     [System.Serializable]
@@ -80,6 +144,20 @@ namespace SurvivalEngine
         public float scale;
         public float time; //Time left before regrowth
         public float probability; //Probability to spawn after time expire
+        public object GetSaveData()
+        {
+            Dictionary<string, object> sendData = new Dictionary<string, object>();
+            sendData["data_id"] = data_id;
+            sendData["uid"] = uid;
+            sendData["scene"] = scene;
+            sendData["pos"] = pos.ToString();
+            sendData["rot"] = rot.ToString();
+            sendData["layer"] = layer;
+            sendData["scale"] = scale;
+            sendData["time"] = time;
+            sendData["probability"] = probability;
+            return sendData;
+        }
     }
 
     public enum TimeType
@@ -150,7 +228,85 @@ namespace SurvivalEngine
             music_volume = 1f;
             sfx_volume = 1f;
         }
-
+        string GetSaveData()
+        {
+            Dictionary<string, object> sendData = new Dictionary<string, object>();
+            sendData["user_id"] = "111";
+            sendData["map_id"] = 1;
+            sendData["world_seed"] = this.world_seed;
+            sendData["current_entry_index"] = this.current_entry_index;
+            sendData["day"] = this.current_entry_index;
+            sendData["day_time"] = this.current_entry_index;
+            sendData["play_time"] = this.current_entry_index;
+            Dictionary<int, object> characterData = new Dictionary<int, object>();
+            foreach(int id in this.player_characters.Keys)
+            {
+                characterData[id] = this.player_characters[id].GetSaveData();
+            }
+            sendData["player_characters"] = Json.Serialize(characterData);
+            Dictionary<string, object> inventoryData = new Dictionary<string, object>();
+            foreach(string id in this.inventories.Keys)
+            {
+                inventoryData[id] = this.inventories[id].GetSaveData();
+            }
+            sendData["inventories"] = Json.Serialize(inventoryData);
+            sendData["unique_ids"] = Json.Serialize(unique_ids);
+            sendData["unique_floats"] = Json.Serialize(unique_floats);
+            sendData["unique_strings"] = Json.Serialize(unique_strings);
+            sendData["removed_objects"] = Json.Serialize(removed_objects);
+            sendData["hidden_objects"] = Json.Serialize(hidden_objects);
+            Dictionary<string, object> dropItemData = new Dictionary<string, object>();
+            foreach(string id in this.dropped_items.Keys)
+            {
+                dropItemData[id] = this.dropped_items[id].GetSaveData();
+            }
+            sendData["dropped_items"] = Json.Serialize(dropItemData);
+            Dictionary<string, object> builtData = new Dictionary<string, object>();
+            foreach(string id in this.built_constructions.Keys)
+            {
+                builtData[id] = this.built_constructions[id].GetSaveData();
+            }
+            sendData["built_constructions"] = Json.Serialize(builtData);
+            
+            Dictionary<string, object> sowedData = new Dictionary<string, object>();
+            foreach(string id in this.sowed_plants.Keys)
+            {
+                sowedData[id] = this.sowed_plants[id].GetSaveData();
+            }
+            sendData["sowed_plants"] = Json.Serialize(sowedData);
+            
+            Dictionary<string, object> trainedCharacter = new Dictionary<string, object>();
+            foreach(string id in this.trained_characters.Keys)
+            {
+                trainedCharacter[id] = this.trained_characters[id].GetSaveData();
+            }
+            sendData["trained_characters"] = Json.Serialize(trainedCharacter);
+            
+            Dictionary<string, object> spawnedData = new Dictionary<string, object>();
+            foreach(string id in this.spawned_objects.Keys)
+            {
+                spawnedData[id] = this.spawned_objects[id].GetSaveData();
+            }
+            sendData["spawned_objects"] = Json.Serialize(spawnedData);
+            
+            Dictionary<string, object> sceneData = new Dictionary<string, object>();
+            foreach(string id in this.scene_objects.Keys)
+            {
+                sceneData[id] = this.scene_objects[id].GetSaveData();
+            }
+            sendData["scene_objects"] = Json.Serialize(sceneData);
+            
+            Dictionary<string, object> worldRegrowthData = new Dictionary<string, object>();
+            foreach(string id in this.world_regrowth.Keys)
+            {
+                worldRegrowthData[id] = this.world_regrowth[id].GetSaveData();
+            }
+            sendData["world_regrowth"] = Json.Serialize(worldRegrowthData);
+            Dictionary<string, object> data = new Dictionary<string, object>();
+            data["a"] = sendData["unique_floats"];
+            return Json.Serialize(data);
+            // sendData["player_characters"]
+        }
         public void FixData()
         {
             //Fix data to make sure old save files compatible with new game version
@@ -688,7 +844,9 @@ namespace SurvivalEngine
                 file_loaded = filename;
 
                 SaveSystem.SaveFile<PlayerData>(filename, data);
+                SaveSystem.SaveFile(filename + "111", data.GetSaveData());
                 SaveSystem.SetLastSave(filename);
+                // Debug.LogError(data.GetSaveData());
             }
         }
 

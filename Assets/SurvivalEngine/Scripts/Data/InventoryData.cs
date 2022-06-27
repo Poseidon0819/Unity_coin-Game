@@ -21,7 +21,15 @@ namespace SurvivalEngine
         public int quantity;
         public float durability;
         public string uid;
-
+        public object GetSaveData()
+        {
+            Dictionary<string, object> sendData = new Dictionary<string, object>();
+            sendData["item_id"] = this.item_id;
+            sendData["quantity"] = this.quantity;
+            sendData["durability"] = this.durability;
+            sendData["uid"] = this.uid;
+            return sendData;
+        }
         public InventoryItemData(string id, int q, float dura, string uid) { item_id = id; quantity = q; durability = dura; this.uid = uid; }
         public ItemData GetItem() { return ItemData.Get(item_id); }
     }
@@ -34,6 +42,20 @@ namespace SurvivalEngine
         public string uid;
         public int size = 99;
 
+        public object GetSaveData()
+        {
+            Dictionary<string, object> sendData = new Dictionary<string, object>();
+            Dictionary<int, object> itemData = new Dictionary<int, object>();
+            foreach(int id in items.Keys)
+            {
+                itemData[id] = items[id].GetSaveData();
+            }
+            sendData["items"] = itemData;
+            sendData["type"] = (int)type;
+            sendData["uid"] = uid;
+            sendData["size"] = size;
+            return sendData;
+        }
         public InventoryData(InventoryType type, string uid)
         {
             this.type = type;
