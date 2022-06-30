@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using UnityEngine;
+using UnityEngine.Networking;
+using System.Collections;
 
 namespace SurvivalEngine
 {
@@ -47,31 +49,43 @@ namespace SurvivalEngine
                     BinaryFormatter bf = new BinaryFormatter();
                     string fullpath = Application.persistentDataPath + "/" + filename + extension;
                     Debug.LogError(fullpath);
-                    file = File.Create(fullpath);
-                    bf.Serialize(file, data);
-                    file.Close();
+                    // file = File.Create(fullpath);
+                    // bf.Serialize(file, data);
+                    // file.Close();
+                    MemoryStream ms = new MemoryStream();
+                    bf.Serialize(ms, data);
+                    byte[] bytes = ms.ToArray();
+                    Debug.LogError(bytes.Length);
                 }
                 catch (System.Exception e) { Debug.Log("Error Saving Data " + e); if (file != null) file.Close(); }
             }
         }
         public static void SaveFile(string filename, string data)
         {
-            if (IsValidFilename(filename))
-            {
-                FileStream file = null;
-                try
-                {
-                    BinaryFormatter bf = new BinaryFormatter();
-                    string fullpath = Application.persistentDataPath + "/" + filename + extension;
-                    Debug.LogError(fullpath);
-                    StreamWriter writer = new StreamWriter(fullpath, true);
-                    writer.WriteLine(data);
-                    // file = File.Create(fullpath);
-                    // bf.Serialize(file, data);
-                    // file.Close();
-                }
-                catch (System.Exception e) { Debug.Log("Error Saving Data " + e); if (file != null) file.Close(); }
-            }
+            // if (IsValidFilename(filename))
+            // {
+            //     FileStream file = null;
+            //     try
+            //     {
+            //         BinaryFormatter bf = new BinaryFormatter();
+            //         string fullpath = Application.persistentDataPath + "/" + filename + extension;
+            //         Debug.LogError(fullpath);
+            //         StreamWriter writer = new StreamWriter(fullpath, true);
+            //         string temp = "";
+            //         for(int i =0; i < data.Length; i++) {
+            //             writer.Write(data[i]);
+            //             if(i > 134600){
+            //                 temp += data[i];
+            //             }
+            //         }
+            //         Debug.LogError(temp);
+            //         Debug.LogError(data.Length);
+            //         // file = File.Create(fullpath);
+            //         // bf.Serialize(file, data);
+            //         // file.Close();
+            //     }
+            //     catch (System.Exception e) { Debug.Log("Error Saving Data " + e); if (file != null) file.Close(); }
+            // }
         }
 
         public static void DeleteFile(string filename)

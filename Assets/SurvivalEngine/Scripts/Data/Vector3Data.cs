@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System;
 using System.Collections;
+using System.Collections.Generic;
 
 namespace SurvivalEngine
 {
@@ -22,6 +23,13 @@ namespace SurvivalEngine
             x = iX;
             y = iY;
             z = iZ;
+        }
+        public void LoadSaveData(string strData)
+        {
+            List<object> data = MiniJSON.Json.Deserialize(strData) as List<object>;
+            x = float.Parse(data[0].ToString());
+            y = float.Parse(data[1].ToString());
+            z = float.Parse(data[2].ToString());
         }
 
         public override string ToString()
@@ -55,6 +63,14 @@ namespace SurvivalEngine
             y = iY;
             z = iZ;
             w = iW;
+        }
+        public void LoadSaveData(string strData)
+        {
+            List<object> data = MiniJSON.Json.Deserialize(strData) as List<object>;
+            x = float.Parse(data[0].ToString());
+            y = float.Parse(data[1].ToString());
+            z = float.Parse(data[2].ToString());
+            w = float.Parse(data[3].ToString());
         }
 
         public override string ToString()

@@ -21,6 +21,13 @@ namespace SurvivalEngine
         public int quantity;
         public float durability;
         public string uid;
+        public void LoadSaveData(Dictionary<string, object> data)
+        {
+            this.item_id = data["item_id"].ToString();
+            this.quantity = int.Parse(data["quantity"].ToString());
+            this.durability = float.Parse(data["durability"].ToString());
+            this.uid = data["uid"].ToString();
+        }
         public object GetSaveData()
         {
             Dictionary<string, object> sendData = new Dictionary<string, object>();
@@ -30,6 +37,7 @@ namespace SurvivalEngine
             sendData["uid"] = this.uid;
             return sendData;
         }
+        public InventoryItemData(){}
         public InventoryItemData(string id, int q, float dura, string uid) { item_id = id; quantity = q; durability = dura; this.uid = uid; }
         public ItemData GetItem() { return ItemData.Get(item_id); }
     }
@@ -42,6 +50,20 @@ namespace SurvivalEngine
         public string uid;
         public int size = 99;
 
+        public void LoadSaveData(Dictionary<string, object> data)
+        {
+            Dictionary<string, object> itemData = data["items"] as Dictionary<string, object>;
+            this.items = new Dictionary<int, InventoryItemData>();
+            foreach(string id in itemData.Keys)
+            {
+                InventoryItemData tmp = new InventoryItemData();
+                tmp.LoadSaveData(itemData[id] as Dictionary<string, object>);
+                this.items[int.Parse(id)] = tmp;
+            }
+            this.type = (InventoryType)int.Parse(data["type"].ToString());
+            this.uid = data["uid"].ToString();
+            this.size = int.Parse(data["size"].ToString());
+        }
         public object GetSaveData()
         {
             Dictionary<string, object> sendData = new Dictionary<string, object>();
@@ -55,6 +77,9 @@ namespace SurvivalEngine
             sendData["uid"] = uid;
             sendData["size"] = size;
             return sendData;
+        }
+        public InventoryData()
+        {
         }
         public InventoryData(InventoryType type, string uid)
         {

@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.Networking;
+using MiniJSON;
 
 namespace SurvivalEngine
 {
@@ -36,7 +38,7 @@ namespace SurvivalEngine
         void Awake()
         {
             _instance = this;
-            PlayerData.LoadLast();
+            // PlayerData.LoadLast();
         }
 
         private void Start()
@@ -52,41 +54,41 @@ namespace SurvivalEngine
             }
 
             //Set player and camera position
-            if (!string.IsNullOrEmpty(pdata.current_scene) && pdata.current_scene == scene)
+            // if (!string.IsNullOrEmpty(pdata.current_scene) && pdata.current_scene == scene)
+            // {
+            foreach (PlayerCharacter player in PlayerCharacter.GetAll())
             {
-                foreach (PlayerCharacter player in PlayerCharacter.GetAll())
+                //Entry index: -1 = go to saved pos, 0=dont change character pos, 1+ = go to entry index
+
+                //Saved position
+                if (pdata.current_entry_index < 0)
                 {
-                    //Entry index: -1 = go to saved pos, 0=dont change character pos, 1+ = go to entry index
-
-                    //Saved position
-                    if (pdata.current_entry_index < 0)
-                    {
-                        player.transform.position = player.Data.position;
-                        TheCamera.Get().MoveToTarget(player.Data.position);
-                    }
-
-                    //Entry index
-                    if (pdata.current_entry_index > 0)
-                    {
-                        ExitZone zone = ExitZone.GetIndex(pdata.current_entry_index);
-                        if (zone != null)
-                        {
-                            Vector3 pos = zone.transform.position + zone.entry_offset;
-                            Vector3 dir = new Vector3(zone.entry_offset.x, 0f, zone.entry_offset.z);
-                            player.transform.position = pos;
-                            if (dir.magnitude > 0.1f)
-                            {
-                                player.transform.rotation = Quaternion.LookRotation(dir.normalized, Vector3.up);
-                                player.FaceTorward(transform.position + dir.normalized);
-                            }
-                            TheCamera.Get().MoveToTarget(pos);
-                        }
-                    }
-
-                    //Update saved pos
-                    player.Data.position = player.transform.position;
+                    player.transform.position = player.Data.position;
+                    TheCamera.Get().MoveToTarget(player.Data.position);
                 }
+
+                //Entry index
+                if (pdata.current_entry_index > 0)
+                {
+                    ExitZone zone = ExitZone.GetIndex(pdata.current_entry_index);
+                    if (zone != null)
+                    {
+                        Vector3 pos = zone.transform.position + zone.entry_offset;
+                        Vector3 dir = new Vector3(zone.entry_offset.x, 0f, zone.entry_offset.z);
+                        player.transform.position = pos;
+                        if (dir.magnitude > 0.1f)
+                        {
+                            player.transform.rotation = Quaternion.LookRotation(dir.normalized, Vector3.up);
+                            player.FaceTorward(transform.position + dir.normalized);
+                        }
+                        TheCamera.Get().MoveToTarget(pos);
+                    }
+                }
+
+                //Update saved pos
+                player.Data.position = player.transform.position;
             }
+            // }
 
             //Update pet position (do this before spawning characters)
             foreach (PlayerCharacter player in PlayerCharacter.GetAll())
@@ -125,7 +127,7 @@ namespace SurvivalEngine
             }
 
             //Set current scene
-            pdata.current_scene = scene;
+            // pdata.current_scene = scene;
 
             //Black panel transition
             if (!BlackPanel.Get().IsVisible())
@@ -387,7 +389,7 @@ namespace SurvivalEngine
                 PlayerData pdata = PlayerData.Get();
                 if (pdata != null)
                 {
-                    pdata.current_scene = scene;
+                    // pdata.current_scene = scene;
                     pdata.current_entry_index = entry_index;
                 }
 
@@ -401,46 +403,60 @@ namespace SurvivalEngine
         //---- Load / Save -----
 
         //Save is not static, because a scene and save file must be loaded before you can save
-        public void Save()
-        {
-            Save(PlayerData.Get().filename);
-        }
 
-        public bool Save(string filename)
+        public bool Save()
         {
-            if (!SaveSystem.IsValidFilename(filename))
-                return false; //Failed
+            // if (!SaveSystem.IsValidFilename(filename))
+            //     return false; //Failed
 
             foreach (PlayerCharacter player in PlayerCharacter.GetAll())
                 player.Data.position = player.transform.position;
 
-            PlayerData.Get().current_scene = SceneNav.GetCurrentScene();
+            // PlayerData.Get().current_scene = SceneNav.GetCurrentScene();
             PlayerData.Get().current_entry_index = -1; //Go to saved current_pos instead of scene position
 
-            if (beforeSave != null)
-                beforeSave.Invoke(filename);
-
-            PlayerData.Save(filename, PlayerData.Get());
+            // PlayerData.Save(filename, );
+            PlayerData data = PlayerData.Get();
+            StartCoroutine(SendSaveData(data.GetSaveData()));
             return true;
         }
+        void OnApplicationQuit()
+        {
+            this.Save();
+        }
+        IEnumerator SendSaveData(WWWForm form)
+        {
+            var url = GlobalManager.instance.baseUrl +"worlds/create";
 
-        public static void Load()
+            UnityWebRequest www = UnityWebRequest.Post(url, form);
+            yield return www.SendWebRequest();
+
+            if (www.result != UnityWebRequest.Result.Success)
+            {
+                Debug.LogError(www.error);
+            }
+            else
+            {
+                Debug.LogError("Form upload complete!");
+            }
+        }
+        public void Load()
         {
             Load(PlayerData.GetLastSave());
         }
 
-        public static bool Load(string filename)
+        public bool Load(string filename)
         {
-            if (!SaveSystem.IsValidFilename(filename))
-                return false; //Failed
+            // if (!SaveSystem.IsValidFilename(filename))
+            //     return false; //Failed
 
-            PlayerData.Unload(); //Make sure to unload first, or it won't load if already loaded
-            PlayerData.AutoLoad(filename);
+            // PlayerData.Unload(); //Make sure to unload first, or it won't load if already loaded
+            // PlayerData.AutoLoad(filename);
+            // Debug.LogError("Load");
+            // if (afterLoad != null)
+            //     afterLoad.Invoke();
+            // StartCoroutine(this.LoadData());
 
-            if (afterLoad != null)
-                afterLoad.Invoke();
-
-            SceneNav.GoTo(PlayerData.Get().current_scene);
             return true;
         }
 
@@ -454,7 +470,7 @@ namespace SurvivalEngine
             if (!SaveSystem.IsValidFilename(filename))
                 return false; //Failed
 
-            PlayerData.NewGame(filename);
+            PlayerData.NewGame();
 
             if (afterNewGame != null)
                 afterNewGame.Invoke();

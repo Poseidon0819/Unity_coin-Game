@@ -16,7 +16,7 @@ namespace SurvivalEngine
 
         public static void GoTo(string scene)
         {
-            SceneManager.LoadScene(scene);
+            SceneManager.LoadSceneAsync(scene);
         }
 
         public static string GetCurrentScene()

@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using MiniJSON;
 
 namespace SurvivalEngine
 {
@@ -37,15 +38,74 @@ namespace SurvivalEngine
         public Dictionary<string, PlayerPetData> pets = new Dictionary<string, PlayerPetData>();
 
         public PlayerCharacterData(int id) { player_id = id; }
+        public void LoadSaveData(Dictionary<string, object> data)
+        {
+            this.player_id = int.Parse(data["player_id"].ToString());
+            this.position.LoadSaveData(data["position"].ToString());
+            Debug.LogError(this.position);
+            this.xp = int.Parse(data["xp"].ToString());
+            this.gold = int.Parse(data["gold"].ToString());
+
+            Dictionary<string, object> attData = data["attributes"] as Dictionary<string, object>;
+            this.attributes = new Dictionary<AttributeType, float>();
+            foreach(string type in attData.Keys)
+            {
+                this.attributes[(AttributeType)int.Parse(type)] = float.Parse(attData[type].ToString());
+            }
+            
+            this.timed_bonus_effects = new Dictionary<BonusType, TimedBonusData>();
+            Dictionary<string, object> timeBonusData = data["timed_bonus_effects"] as Dictionary<string, object>;
+            foreach(string type in timeBonusData.Keys)
+            {
+                TimedBonusData tmp = new TimedBonusData();
+                List<object> listData = timeBonusData[type] as List<object>;
+                tmp.bonus = (BonusType)int.Parse(listData[0].ToString());
+                tmp.time = float.Parse(listData[1].ToString());
+                tmp.value = float.Parse(listData[2].ToString());
+                this.timed_bonus_effects[(BonusType)int.Parse(type)] = tmp;
+            }
+
+            Dictionary<string, object> craftedData = data["crafted_count"] as Dictionary<string, object>;
+            this.crafted_count = new Dictionary<string, int>();
+            foreach(string id in craftedData.Keys)
+            {
+                this.crafted_count[id] = int.Parse(craftedData[id].ToString());
+            }
+
+            Dictionary<string, object> killData = data["kill_count"] as Dictionary<string, object>;
+            this.kill_count = new Dictionary<string, int>();
+            foreach(string id in killData.Keys)
+            {
+                this.kill_count[id] = int.Parse(killData[id].ToString());
+            }
+
+            Dictionary<string, object> unlockedData = data["unlocked_ids"] as Dictionary<string, object>;
+            this.unlocked_ids = new Dictionary<string, bool>();
+            foreach(string id in unlockedData.Keys)
+            {
+                this.unlocked_ids[id] = bool.Parse(unlockedData[id].ToString());
+            }
+            
+            this.pets = new Dictionary<string, PlayerPetData>();
+            Dictionary<string, object> petData = data["pets"] as Dictionary<string, object>;
+            foreach(string type in petData.Keys)
+            {
+                PlayerPetData tmp = new PlayerPetData();
+                List<object> listData = petData[type] as List<object>;
+                tmp.pet_id = listData[0].ToString();
+                tmp.uid = listData[1].ToString();
+                this.pets[type] = tmp;
+            }
+        }
         public object GetSaveData()
         {
             Dictionary<string, object> sendData = new Dictionary<string, object>();
             sendData["player_id"] = this.player_id;
-            List<float> posList = new List<float>();
-            posList.Add(this.position.x);
-            posList.Add(this.position.y);
-            posList.Add(this.position.z);
-            sendData["position"] = posList;
+            // List<float> posList = new List<float>();
+            // posList.Add(this.position.x);
+            // posList.Add(this.position.y);
+            // posList.Add(this.position.z);
+            sendData["position"] = position.ToString();
             sendData["xp"] = this.xp;
             sendData["gold"] = this.gold;
             Dictionary<int, object> attData = new Dictionary<int, object>();

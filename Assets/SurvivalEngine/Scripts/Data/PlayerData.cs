@@ -15,6 +15,16 @@ namespace SurvivalEngine
         public Vector3Data pos;
         public int quantity;
         public float durability;
+        public void LoadSaveData(Dictionary<string, object> data)
+        {
+            this.uid = data["uid"].ToString();
+            this.item_id = data["item_id"].ToString();
+            this.scene = data["scene"].ToString();
+            this.pos = new Vector3Data();
+            this.pos.LoadSaveData(data["pos"].ToString());
+            this.quantity = int.Parse(data["quantity"].ToString());
+            this.durability = float.Parse(data["durability"].ToString());
+        }
         public object GetSaveData()
         {
             Dictionary<string, object> sendData = new Dictionary<string, object>();
@@ -37,6 +47,17 @@ namespace SurvivalEngine
         public Vector3Data pos;
         public QuaternionData rot;
         public float durability;
+        public void LoadSaveData(Dictionary<string, object> data)
+        {
+            this.uid = data["uid"].ToString();
+            this.construction_id = data["construction_id"].ToString();
+            this.scene = data["scene"].ToString();
+            this.pos = new Vector3Data();
+            this.pos.LoadSaveData(data["pos"].ToString());
+            this.rot = new QuaternionData();
+            this.rot.LoadSaveData(data["rot"].ToString());
+            this.durability = float.Parse(data["durability"].ToString());
+        }
         public object GetSaveData()
         {
             Dictionary<string, object> sendData = new Dictionary<string, object>();
@@ -59,6 +80,17 @@ namespace SurvivalEngine
         public Vector3Data pos;
         public QuaternionData rot;
         public int growth_stage;
+        public void LoadSaveData(Dictionary<string, object> data)
+        {
+            this.uid = data["uid"].ToString();
+            this.plant_id = data["plant_id"].ToString();
+            this.scene = data["scene"].ToString();
+            this.pos = new Vector3Data();
+            this.pos.LoadSaveData(data["pos"].ToString());
+            this.rot = new QuaternionData();
+            this.rot.LoadSaveData(data["rot"].ToString());
+            this.growth_stage = int.Parse(data["growth_stage"].ToString());
+        }
         public object GetSaveData()
         {
             Dictionary<string, object> sendData = new Dictionary<string, object>();
@@ -80,6 +112,16 @@ namespace SurvivalEngine
         public string scene;
         public Vector3Data pos;
         public QuaternionData rot;
+        public void LoadSaveData(Dictionary<string, object> data)
+        {
+            this.uid = data["uid"].ToString();
+            this.character_id = data["character_id"].ToString();
+            this.scene = data["scene"].ToString();
+            this.pos = new Vector3Data();
+            this.pos.LoadSaveData(data["pos"].ToString());
+            this.rot = new QuaternionData();
+            this.rot.LoadSaveData(data["rot"].ToString());
+        }
         public object GetSaveData()
         {
             Dictionary<string, object> sendData = new Dictionary<string, object>();
@@ -101,6 +143,17 @@ namespace SurvivalEngine
         public Vector3Data pos;
         public QuaternionData rot;
         public float scale;
+        public void LoadSaveData(Dictionary<string, object> data)
+        {
+            this.uid = data["uid"].ToString();
+            this.id = data["id"].ToString();
+            this.scene = data["scene"].ToString();
+            this.pos = new Vector3Data();
+            this.pos.LoadSaveData(data["pos"].ToString());
+            this.rot = new QuaternionData();
+            this.rot.LoadSaveData(data["rot"].ToString());
+            this.scale = float.Parse(data["scale"].ToString());
+        }
         public object GetSaveData()
         {
             Dictionary<string, object> sendData = new Dictionary<string, object>();
@@ -121,6 +174,15 @@ namespace SurvivalEngine
         public string scene;
         public Vector3Data pos;
         public QuaternionData rot;
+        public void LoadSaveData(Dictionary<string, object> data)
+        {
+            this.uid = data["uid"].ToString();
+            this.scene = data["scene"].ToString();
+            this.pos = new Vector3Data();
+            this.pos.LoadSaveData(data["pos"].ToString());
+            this.rot = new QuaternionData();
+            this.rot.LoadSaveData(data["rot"].ToString());
+        }
         public object GetSaveData()
         {
             Dictionary<string, object> sendData = new Dictionary<string, object>();
@@ -144,6 +206,20 @@ namespace SurvivalEngine
         public float scale;
         public float time; //Time left before regrowth
         public float probability; //Probability to spawn after time expire
+        public void LoadSaveData(Dictionary<string, object> data)
+        {
+            this.uid = data["uid"].ToString();
+            this.data_id = data["data_id"].ToString();
+            this.scene = data["scene"].ToString();
+            this.pos = new Vector3Data();
+            this.pos.LoadSaveData(data["pos"].ToString());
+            this.rot = new QuaternionData();
+            this.rot.LoadSaveData(data["rot"].ToString());
+            this.layer = int.Parse(data["layer"].ToString());
+            this.scale = float.Parse(data["scale"].ToString());
+            this.time = float.Parse(data["time"].ToString());
+            this.probability = float.Parse(data["probability"].ToString());
+        }
         public object GetSaveData()
         {
             Dictionary<string, object> sendData = new Dictionary<string, object>();
@@ -175,14 +251,13 @@ namespace SurvivalEngine
     [System.Serializable]
     public class PlayerData
     {
-        public string filename;
         public string version;
         public DateTime last_save;
 
         //-------------------
 
         public int world_seed = 0; //Randomly Generated world
-        public string current_scene = ""; //Scene loaded
+        // public string current_scene = ""; //Scene loaded
         public int current_entry_index = 0; //-1 means go to current_pos, 0 means default scene pos, >0 means at matching entry index
         
         public int day = 0;
@@ -215,9 +290,8 @@ namespace SurvivalEngine
         private static string file_loaded = "";
         public static PlayerData player_data = null;
 
-        public PlayerData(string name)
+        public PlayerData()
         {
-            filename = name;
             version = Application.version;
             last_save = DateTime.Now;
 
@@ -228,84 +302,208 @@ namespace SurvivalEngine
             music_volume = 1f;
             sfx_volume = 1f;
         }
-        string GetSaveData()
+        public void LoadSaveData(Dictionary<string, object> data)
         {
-            Dictionary<string, object> sendData = new Dictionary<string, object>();
-            sendData["user_id"] = "111";
-            sendData["map_id"] = 1;
-            sendData["world_seed"] = this.world_seed;
-            sendData["current_entry_index"] = this.current_entry_index;
-            sendData["day"] = this.current_entry_index;
-            sendData["day_time"] = this.current_entry_index;
-            sendData["play_time"] = this.current_entry_index;
+            this.world_seed = int.Parse(data["world_seed"].ToString());
+            this.current_entry_index = int.Parse(data["current_entry_index"].ToString());
+            this.day = int.Parse(data["day"].ToString());
+            this.day_time = float.Parse(data["day_time"].ToString());
+            this.play_time = float.Parse(data["play_time"].ToString());
+
+            this.player_characters = new Dictionary<int, PlayerCharacterData>();
+            Dictionary<string, object> characterData = Json.Deserialize(data["player_characters"].ToString()) as Dictionary<string, object>;
+            foreach(string id in characterData.Keys)
+            {
+                PlayerCharacterData tmp = new PlayerCharacterData(int.Parse(id));
+                tmp.LoadSaveData(characterData[id] as Dictionary<string, object>);
+                this.player_characters[int.Parse(id)] = tmp;
+            }
+
+            this.inventories = new Dictionary<string, InventoryData>();
+            Dictionary<string, object> inventoryData = Json.Deserialize(data["inventories"].ToString()) as Dictionary<string, object>;
+            foreach(string id in inventoryData.Keys)
+            {
+                InventoryData tmp = new InventoryData();
+                tmp.LoadSaveData(inventoryData[id] as Dictionary<string, object>);
+                this.inventories[id] = tmp;
+            }
+
+            this.unique_ids = new Dictionary<string, int>();
+            Dictionary<string, object> uniqueData = Json.Deserialize(data["unique_ids"].ToString()) as Dictionary<string, object>;
+            foreach(string id in uniqueData.Keys)
+            {
+                unique_ids[id] = int.Parse(uniqueData[id].ToString());
+            }
+
+            this.unique_floats = new Dictionary<string, float>();
+            Dictionary<string, object> uniqueFloatData = Json.Deserialize(data["unique_floats"].ToString()) as Dictionary<string, object>;
+            foreach(string id in uniqueFloatData.Keys)
+            {
+                unique_floats[id] = float.Parse(uniqueFloatData[id].ToString());
+            }
+
+            this.unique_strings = new Dictionary<string, string>();
+            Dictionary<string, object> uniqueStringData = Json.Deserialize(data["unique_strings"].ToString()) as Dictionary<string, object>;
+            foreach(string id in uniqueStringData.Keys)
+            {
+                unique_strings[id] = uniqueStringData[id].ToString();
+            }
+
+            this.removed_objects = new Dictionary<string, int>();
+            Dictionary<string, object> removedData = Json.Deserialize(data["removed_objects"].ToString()) as Dictionary<string, object>;
+            foreach(string id in removedData.Keys)
+            {
+                removed_objects[id] = int.Parse(removedData[id].ToString());
+            }
+
+            this.hidden_objects = new Dictionary<string, int>();
+            Dictionary<string, object> hiddenData = Json.Deserialize(data["hidden_objects"].ToString()) as Dictionary<string, object>;
+            foreach(string id in hiddenData.Keys)
+            {
+                hidden_objects[id] = int.Parse(hiddenData[id].ToString());
+            }
+            
+            Dictionary<string, object> dropItemData = Json.Deserialize(data["dropped_items"].ToString()) as Dictionary<string, object>;
+            this.dropped_items = new Dictionary<string, DroppedItemData>();
+            foreach(string id in dropItemData.Keys)
+            {
+                DroppedItemData tmp = new DroppedItemData();
+                tmp.LoadSaveData(dropItemData[id] as Dictionary<string, object>);
+                this.dropped_items[id] = tmp;
+            }
+            
+            Dictionary<string, object> builtData = Json.Deserialize(data["built_constructions"].ToString()) as Dictionary<string, object>;
+            this.built_constructions = new Dictionary<string, BuiltConstructionData>();
+            foreach(string id in builtData.Keys)
+            {
+                BuiltConstructionData tmp = new BuiltConstructionData();
+                tmp.LoadSaveData(builtData[id] as Dictionary<string, object>);
+                this.built_constructions[id] = tmp;
+            }
+            
+            Dictionary<string, object> sowedData = Json.Deserialize(data["sowed_plants"].ToString()) as Dictionary<string, object>;
+            this.sowed_plants = new Dictionary<string, SowedPlantData>();
+            foreach(string id in sowedData.Keys)
+            {
+                SowedPlantData tmp = new SowedPlantData();
+                tmp.LoadSaveData(sowedData[id] as Dictionary<string, object>);
+                this.sowed_plants[id] = tmp;
+            }
+            
+            Dictionary<string, object> trainedCharacter = Json.Deserialize(data["trained_characters"].ToString()) as Dictionary<string, object>;
+            this.trained_characters = new Dictionary<string, TrainedCharacterData>();
+            foreach(string id in trainedCharacter.Keys)
+            {
+                TrainedCharacterData tmp = new TrainedCharacterData();
+                tmp.LoadSaveData(trainedCharacter[id] as Dictionary<string, object>);
+                this.trained_characters[id] = tmp;
+            }
+            
+            Dictionary<string, object> spawnedData = Json.Deserialize(data["spawned_objects"].ToString()) as Dictionary<string, object>;
+            this.spawned_objects = new Dictionary<string, SpawnedData>();
+            foreach(string id in spawnedData.Keys)
+            {
+                SpawnedData tmp = new SpawnedData();
+                tmp.LoadSaveData(spawnedData[id] as Dictionary<string, object>);
+                this.spawned_objects[id] = tmp;
+            }
+            
+            Dictionary<string, object> sceneData = Json.Deserialize(data["scene_objects"].ToString()) as Dictionary<string, object>;
+            this.scene_objects = new Dictionary<string, SceneObjectData>();
+            foreach(string id in sceneData.Keys)
+            {
+                SceneObjectData tmp = new SceneObjectData();
+                tmp.LoadSaveData(sceneData[id] as Dictionary<string, object>);
+                this.scene_objects[id] = tmp;
+            }
+            
+            Dictionary<string, object> worldRegrowthData = Json.Deserialize(data["world_regrowth"].ToString()) as Dictionary<string, object>;
+            this.world_regrowth = new Dictionary<string, RegrowthData>();
+            foreach(string id in worldRegrowthData.Keys)
+            {
+                RegrowthData tmp = new RegrowthData();
+                tmp.LoadSaveData(worldRegrowthData[id] as Dictionary<string, object>);
+                this.world_regrowth[id] = tmp;
+            }
+        }
+        public WWWForm GetSaveData()
+        {
+            WWWForm form = new WWWForm();
+            form.AddField("user_id", GlobalManager.instance.userId);
+            form.AddField("map_id", GlobalManager.instance.mapId);
+            form.AddField("world_seed", this.world_seed.ToString());
+            Debug.LogError(this.world_seed.ToString());
+            form.AddField("current_entry_index", this.current_entry_index.ToString());
+            form.AddField("day", this.day.ToString());
+            form.AddField("day_time", this.day_time.ToString());
+            form.AddField("play_time", this.play_time.ToString());
             Dictionary<int, object> characterData = new Dictionary<int, object>();
             foreach(int id in this.player_characters.Keys)
             {
                 characterData[id] = this.player_characters[id].GetSaveData();
             }
-            sendData["player_characters"] = Json.Serialize(characterData);
+            form.AddField("player_characters", Json.Serialize(characterData));
             Dictionary<string, object> inventoryData = new Dictionary<string, object>();
             foreach(string id in this.inventories.Keys)
             {
                 inventoryData[id] = this.inventories[id].GetSaveData();
             }
-            sendData["inventories"] = Json.Serialize(inventoryData);
-            sendData["unique_ids"] = Json.Serialize(unique_ids);
-            sendData["unique_floats"] = Json.Serialize(unique_floats);
-            sendData["unique_strings"] = Json.Serialize(unique_strings);
-            sendData["removed_objects"] = Json.Serialize(removed_objects);
-            sendData["hidden_objects"] = Json.Serialize(hidden_objects);
+            form.AddField("inventories", Json.Serialize(inventoryData));
+            form.AddField("unique_ids", Json.Serialize(unique_ids));
+            form.AddField("unique_floats", Json.Serialize(unique_floats));
+            form.AddField("unique_strings", Json.Serialize(unique_strings));
+            form.AddField("removed_objects", Json.Serialize(removed_objects));
+            form.AddField("hidden_objects", Json.Serialize(hidden_objects));
             Dictionary<string, object> dropItemData = new Dictionary<string, object>();
             foreach(string id in this.dropped_items.Keys)
             {
                 dropItemData[id] = this.dropped_items[id].GetSaveData();
             }
-            sendData["dropped_items"] = Json.Serialize(dropItemData);
+            form.AddField("dropped_items", Json.Serialize(dropItemData));
             Dictionary<string, object> builtData = new Dictionary<string, object>();
             foreach(string id in this.built_constructions.Keys)
             {
                 builtData[id] = this.built_constructions[id].GetSaveData();
             }
-            sendData["built_constructions"] = Json.Serialize(builtData);
+            form.AddField("built_constructions", Json.Serialize(builtData));
             
             Dictionary<string, object> sowedData = new Dictionary<string, object>();
             foreach(string id in this.sowed_plants.Keys)
             {
                 sowedData[id] = this.sowed_plants[id].GetSaveData();
             }
-            sendData["sowed_plants"] = Json.Serialize(sowedData);
+            form.AddField("sowed_plants", Json.Serialize(sowedData));
             
             Dictionary<string, object> trainedCharacter = new Dictionary<string, object>();
             foreach(string id in this.trained_characters.Keys)
             {
                 trainedCharacter[id] = this.trained_characters[id].GetSaveData();
             }
-            sendData["trained_characters"] = Json.Serialize(trainedCharacter);
+            form.AddField("trained_characters", Json.Serialize(trainedCharacter));
             
             Dictionary<string, object> spawnedData = new Dictionary<string, object>();
             foreach(string id in this.spawned_objects.Keys)
             {
                 spawnedData[id] = this.spawned_objects[id].GetSaveData();
             }
-            sendData["spawned_objects"] = Json.Serialize(spawnedData);
+            form.AddField("spawned_objects", Json.Serialize(spawnedData));
             
             Dictionary<string, object> sceneData = new Dictionary<string, object>();
             foreach(string id in this.scene_objects.Keys)
             {
                 sceneData[id] = this.scene_objects[id].GetSaveData();
             }
-            sendData["scene_objects"] = Json.Serialize(sceneData);
+            form.AddField("scene_objects", Json.Serialize(sceneData));
             
             Dictionary<string, object> worldRegrowthData = new Dictionary<string, object>();
             foreach(string id in this.world_regrowth.Keys)
             {
                 worldRegrowthData[id] = this.world_regrowth[id].GetSaveData();
             }
-            sendData["world_regrowth"] = Json.Serialize(worldRegrowthData);
-            Dictionary<string, object> data = new Dictionary<string, object>();
-            data["a"] = sendData["unique_floats"];
-            return Json.Serialize(data);
+            form.AddField("world_regrowth", Json.Serialize(worldRegrowthData));
+            return form;
             // sendData["player_characters"]
+            
         }
         public void FixData()
         {
@@ -830,36 +1028,32 @@ namespace SurvivalEngine
 
         public void Save()
         {
-            Save(file_loaded, this);
+            Save(this);
         }
 
-        public static void Save(string filename, PlayerData data)
+        public static void Save(PlayerData data)
         {
-            if (!string.IsNullOrEmpty(filename) && data != null)
+            if (data != null)
             {
-                data.filename = filename;
-                data.last_save = DateTime.Now;
-                data.version = Application.version;
-                player_data = data;
-                file_loaded = filename;
+                // data.last_save = DateTime.Now;
+                // data.version = Application.version;
+                // player_data = data;
 
-                SaveSystem.SaveFile<PlayerData>(filename, data);
-                SaveSystem.SaveFile(filename + "111", data.GetSaveData());
-                SaveSystem.SetLastSave(filename);
+                // SaveSystem.SaveFile<PlayerData>(filename, data);
+                // string str = data.GetSaveData();
+                // Debug.LogError(str.Length);
+                // str += "afdsfsaf";
+                // Debug.LogError(str.Length);
+                // SaveSystem.SaveFile(filename + "111", str);
+                // SaveSystem.SetLastSave(filename);
                 // Debug.LogError(data.GetSaveData());
             }
         }
 
-        public static void NewGame()
-        {
-            NewGame(GetLastSave()); //default name
-        }
-
         //You should reload the scene right after NewGame
-        public static PlayerData NewGame(string filename)
+        public static PlayerData NewGame()
         {
-            file_loaded = filename;
-            player_data = new PlayerData(filename);
+            player_data = new PlayerData();
             player_data.FixData();
             return player_data;
         }
@@ -889,7 +1083,7 @@ namespace SurvivalEngine
             if (player_data == null)
                 player_data = Load(filename);
             if (player_data == null)
-                player_data = NewGame(filename);
+                player_data = NewGame();
             return player_data;
         }
 
@@ -921,7 +1115,7 @@ namespace SurvivalEngine
         {
             if (file_loaded == filename)
             {
-                player_data = new PlayerData(filename);
+                player_data = new PlayerData();
                 player_data.FixData();
             }
 

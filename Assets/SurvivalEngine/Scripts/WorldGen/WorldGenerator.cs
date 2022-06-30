@@ -81,6 +81,7 @@ namespace SurvivalEngine.WorldGen
 
         public void GenerateRandomWorld(int seed)
         {
+            Debug.LogError(seed);
             this.seed = seed;
             ClearWorld();
             GenerateZones();

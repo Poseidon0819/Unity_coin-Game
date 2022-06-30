@@ -29,15 +29,15 @@ namespace SurvivalEngine
 
         public void OnClickLoad()
         {
-            if (PlayerData.HasLastSave())
-                StartCoroutine(LoadRoutine());
-            else
-                StartCoroutine(NewRoutine());
+            // if (PlayerData.HasLastSave())
+            //     StartCoroutine(LoadRoutine());
+            // else
+            //     StartCoroutine(NewRoutine());
         }
 
         public void OnClickNew()
         {
-            StartCoroutine(NewRoutine());
+            // StartCoroutine(NewRoutine());
         }
 
         private IEnumerator LoadRoutine()
@@ -46,7 +46,7 @@ namespace SurvivalEngine
 
             yield return new WaitForSeconds(1f);
 
-            TheGame.Load();
+            TheGame.Get().Load();
         }
 
         private IEnumerator NewRoutine()
