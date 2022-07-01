@@ -13,8 +13,7 @@ MonoBehaviour:
   m_Name: WaterSpot
   m_EditorClassIdentifier: 
   density: 40
-  quantity: 10
   variance: 10
-  spawns:
-  - prefab: {fileID: 110384554727373746, guid: c64a19acfc3a298489278252c0d84eac, type: 3}
-    probability: 1
+  random_rotation: 0
+  random_scale: 0
+  spawns: []

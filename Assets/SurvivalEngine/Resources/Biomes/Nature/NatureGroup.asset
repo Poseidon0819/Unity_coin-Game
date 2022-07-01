@@ -15,10 +15,8 @@ MonoBehaviour:
   density: 2
   variance: 25
   random_rotation: 0
+  random_scale: 0
   spawns:
   - prefab: {fileID: 6343493202445579137, guid: 4251f8e7b3689ae4b86422b9d2dc7d41,
-      type: 3}
-    probability: 1
-  - prefab: {fileID: 6343493202445579137, guid: ca79e67912fbc0b428c33cbdf9fd3263,
       type: 3}
     probability: 1

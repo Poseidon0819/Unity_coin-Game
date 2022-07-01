@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.Events;
+using System;
 
 namespace SurvivalEngine.WorldGen
 {
@@ -15,9 +16,19 @@ namespace SurvivalEngine.WorldGen
     /// <summary>
     /// Generator of random world
     /// </summary>
-
+    
+    [Serializable]
+    public class WorldItem
+    {
+        public string name;
+        public List<BiomeSpawnData> envSpawners;
+        public List<BiomeSpawn> envSpawnObj;
+        public List<BiomeSpawnData> itemSpawners;
+        public List<BiomeSpawn> itemSpawnObj;
+    }
     public class WorldGenerator : MonoBehaviour
     {
+        public List<WorldItem> worldItems;
         public WorldGeneratorMode mode;
 
         [Header("World Generator")]
@@ -27,6 +38,7 @@ namespace SurvivalEngine.WorldGen
         
         [Header("Biomes")]
         public BiomeData[] biomes;
+        public BiomeData waterBiom;
 
         [Header("Objects Generator")]
         public int iterations = 1000; //How long it will try to place objects 
@@ -50,6 +62,8 @@ namespace SurvivalEngine.WorldGen
         
         private void Start()
         {
+            Debug.LogError(GlobalManager.instance.mapData);
+            this.LoadMapData();
             if (mode == WorldGeneratorMode.Runtime && Application.isPlaying)
             {
                 TheGame.Get().PauseScripts();
@@ -59,7 +73,63 @@ namespace SurvivalEngine.WorldGen
                 TheGame.Get().UnpauseScripts();
             }
         }
+        void LoadMapData()
+        {
+            Dictionary<string, object> mapData = MiniJSON.Json.Deserialize(GlobalManager.instance.mapData) as Dictionary<string, object>;
+            List<object> att = mapData["attributes"] as List<object>;
+            for(int i = 0; i < att.Count; i++) {
+                Dictionary<string, object> dicData = att[i] as Dictionary<string, object>;
+                if(dicData["trait_type"].ToString() == "Resources") {
+                    string value = dicData["value"].ToString();
+                    string[] items = value.Split("+");
+                    for(int j = 0; j < items.Length; j++) {
+                        if(items[i] == "Water") {
+                            List<BiomeData> tmp = new List<BiomeData>(this.biomes);
+                            tmp.Add(waterBiom);
+                            this.biomes = tmp.ToArray();
+                            continue;
+                        }
+                        for(int k = 0; k < worldItems.Count; k++) {
+                            if(worldItems[k].name == items[j]) {
+                                int l, m;
+                                for(l = 0; l < worldItems[k].envSpawners.Count; l++) {
+                                    for(m = 0; m < worldItems[k].envSpawnObj.Count; m++) {
+                                        List<BiomeSpawn> tmp = new List<BiomeSpawn>(worldItems[k].envSpawners[l].spawns);
+                                        tmp.Add(worldItems[k].envSpawnObj[m]);
+                                        worldItems[k].envSpawners[l].spawns = tmp.ToArray();
+                                    }
+                                }
+                                for(l = 0; l < worldItems[k].itemSpawners.Count; l++) {
+                                    for(m = 0; m < worldItems[k].itemSpawnObj.Count; m++) {
+                                        List<BiomeSpawn> tmp = new List<BiomeSpawn>(worldItems[k].itemSpawners[l].spawns);
+                                        tmp.Add(worldItems[k].itemSpawnObj[m]);
+                                        worldItems[k].itemSpawners[l].spawns = tmp.ToArray();
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                if(dicData["traity_type"].ToString() == "Size") {
+                    if(dicData["value"].ToString().Contains("Standard")) {
+                        this.map_size = 100;
+                        this.nb_zones = 10;
+                        this.iterations = 50;
+                    }
+                    if(dicData["value"].ToString().Contains("Large")) {
+                        this.map_size = 200;
+                        this.nb_zones = 20;
+                        this.iterations = 100;
+                    }
+                    if(dicData["value"].ToString().Contains("X-Large")) {
+                        this.map_size = 300;
+                        this.nb_zones = 30;
+                        this.iterations = 150;
+                    }
+                }
+            }
 
+        }
         //Either generate new world, or load previously generated
         public void GeneratedOrLoadWorld()
         {
@@ -76,7 +146,7 @@ namespace SurvivalEngine.WorldGen
         //Call this from script to generate the whole world
         public void GenerateRandomWorld()
         {
-            GenerateRandomWorld(Random.Range(int.MinValue, int.MaxValue));
+            GenerateRandomWorld(UnityEngine.Random.Range(int.MinValue, int.MaxValue));
         }
 
         public void GenerateRandomWorld(int seed)
@@ -117,7 +187,7 @@ namespace SurvivalEngine.WorldGen
             ClearWorld();
 
             //Generate random numbers with a seed
-            Random.InitState(seed);
+            UnityEngine.Random.InitState(seed);
 
             Voronoi.Generate(map_size, nb_zones);
 
@@ -135,7 +205,7 @@ namespace SurvivalEngine.WorldGen
                     zone.data = GetRandomBiome();
                     zone.name = zone.data.id;
                     zone.iterations = iterations;
-                    zone.seed = Random.Range(int.MinValue, int.MaxValue);
+                    zone.seed = UnityEngine.Random.Range(int.MinValue, int.MaxValue);
                     List<Transform> zone_points = new List<Transform>();
                     foreach (Vector3 edge in cell.borderCoordinates)
                     {
@@ -169,7 +239,7 @@ namespace SurvivalEngine.WorldGen
             //Random start zone
             BiomeData start_biome = null; 
             if(starting_zones.Count > 0)
-                start_biome = starting_zones[Random.Range(0, starting_zones.Count)];
+                start_biome = starting_zones[UnityEngine.Random.Range(0, starting_zones.Count)];
 
             //Find closest zone
             PlayerCharacter player = PlayerCharacter.GetFirst();
@@ -320,7 +390,7 @@ namespace SurvivalEngine.WorldGen
             foreach (BiomeData biome in biomes)
                 biome_total_prob += biome.probability;
 
-            float value = Random.Range(0f, biome_total_prob);
+            float value = UnityEngine.Random.Range(0f, biome_total_prob);
             foreach (BiomeData biome in biomes)
             {
                 if (value < biome.probability)

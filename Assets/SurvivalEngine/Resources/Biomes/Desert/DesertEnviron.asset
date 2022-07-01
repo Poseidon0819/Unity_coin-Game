@@ -20,13 +20,5 @@ MonoBehaviour:
   - prefab: {fileID: 7040452427832017335, guid: 1f90e4e71dd2f0f40bf940cd2c1a65cb,
       type: 3}
     probability: 1
-  - prefab: {fileID: 5007265615999521550, guid: f30ee2a7a65b60b4d8f93ddc470f53c4,
-      type: 3}
-    probability: 2
-  - prefab: {fileID: 5473193963595754087, guid: 8a50a1c99f7dd8d4794e82f1d82b622b,
-      type: 3}
-    probability: 1
-  - prefab: {fileID: 319391391079734782, guid: 6ebe51e383782634e8e7e24c794c4b61, type: 3}
-    probability: 0.5
   - prefab: {fileID: 157019468213573531, guid: 710d3ca06efc36044a82515eb32ab14e, type: 3}
     probability: 0.3

@@ -14,6 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   density: 10
   variance: 10
+  random_rotation: 0
+  random_scale: 0
   spawns:
   - prefab: {fileID: 8713980843961276466, guid: bf2994095a51cc545ac7c60a339fcaed,
       type: 3}
@@ -27,6 +29,3 @@ MonoBehaviour:
   - prefab: {fileID: 8713980843961276466, guid: 873ccecdfceec4144a9e1bdf2b4935d0,
       type: 3}
     probability: 1
-  - prefab: {fileID: 7654105342291985998, guid: 60a786d7cf6cfc8469f2a7353caf416d,
-      type: 3}
-    probability: 2

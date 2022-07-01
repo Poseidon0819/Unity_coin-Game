@@ -13,9 +13,7 @@ MonoBehaviour:
   m_Name: DesertItems
   m_EditorClassIdentifier: 
   density: 5
-  quantity: 5
   variance: 5
-  spawns:
-  - prefab: {fileID: 7654105342291985998, guid: 60a786d7cf6cfc8469f2a7353caf416d,
-      type: 3}
-    probability: 4
+  random_rotation: 0
+  random_scale: 0
+  spawns: []

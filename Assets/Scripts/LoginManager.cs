@@ -12,34 +12,62 @@ public class LoginManager : MonoBehaviour
     public InputField userIdInput;
     public InputField mapIdInput;
     public GameObject loginBtn;
+    public GameObject loading;
     public void OnLogin()
     {
         StartCoroutine("LoadData");
     }
     IEnumerator LoadData()
     {
-        var url = GlobalManager.instance.baseUrl + "world?user_id=" + this.userIdInput.text + "&map_id=" + this.mapIdInput.text;
-        GlobalManager.instance.userId = this.userIdInput.text;
-        GlobalManager.instance.mapId = this.mapIdInput.text;
+        this.loginBtn.SetActive(false);
+        this.loading.SetActive(true);
+        while(true) {
+            var url = "https://meta.birdezkingdom.com/reveal/" + mapIdInput.text;
+            UnityWebRequest www = UnityWebRequest.Get(url);
+            yield return www.SendWebRequest();
 
-        UnityWebRequest www = UnityWebRequest.Get(url);
-        yield return www.SendWebRequest();
-
-        if (www.result != UnityWebRequest.Result.Success)
-        {
-            Debug.LogError(www.error);
-        }
-        else
-        {
-            Debug.LogError(www.downloadHandler.text.Length);
-            Dictionary<string, object> data = Json.Deserialize(www.downloadHandler.text) as Dictionary<string, object>;
-            PlayerData.player_data = new PlayerData();
-            if(data.ContainsKey("user_id")) {
-                PlayerData.player_data.LoadSaveData(data);
-            } else {
-                PlayerData.player_data.FixData();
+            if (www.result != UnityWebRequest.Result.Success)
+            {
+                Debug.LogError(www.error);
             }
-            SceneNav.GoTo("Game");
+            else
+            {
+                Debug.LogError(www.downloadHandler.text);
+                if(www.downloadHandler.text.Length < 3) {
+                    loginBtn.SetActive(true);
+                    loading.SetActive(false);
+                    break;
+                } else {
+                    while(true) {
+                        url = GlobalManager.instance.baseUrl + "world?user_id=" + this.userIdInput.text + "&map_id=" + this.mapIdInput.text;
+                        GlobalManager.instance.userId = this.userIdInput.text;
+                        GlobalManager.instance.mapId = this.mapIdInput.text;
+                        GlobalManager.instance.mapData = www.downloadHandler.text;
+
+                        www = UnityWebRequest.Get(url);
+                        yield return www.SendWebRequest();
+
+                        if (www.result != UnityWebRequest.Result.Success)
+                        {
+                            Debug.LogError(www.error);
+                        }
+                        else
+                        {
+                            Debug.LogError(www.downloadHandler.text.Length);
+                            Dictionary<string, object> data = Json.Deserialize(www.downloadHandler.text) as Dictionary<string, object>;
+                            PlayerData.player_data = new PlayerData();
+                            if(data.ContainsKey("user_id")) {
+                                PlayerData.player_data.LoadSaveData(data);
+                            } else {
+                                PlayerData.player_data.FixData();
+                            }
+                            SceneNav.GoTo("Game");
+                            break;
+                        }
+                    }
+                    break;
+                }
+            }
         }
     }
 }

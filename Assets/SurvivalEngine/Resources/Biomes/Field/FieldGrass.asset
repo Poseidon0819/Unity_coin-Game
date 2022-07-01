@@ -26,9 +26,3 @@ MonoBehaviour:
   - prefab: {fileID: 3201309627310344135, guid: 006c632f6bf991540a587eb1f613c7aa,
       type: 3}
     probability: 1
-  - prefab: {fileID: 7892068906072749908, guid: e7057d4fce004d64683edd4236cda28b,
-      type: 3}
-    probability: 0.4
-  - prefab: {fileID: 5473193963595754087, guid: 8a50a1c99f7dd8d4794e82f1d82b622b,
-      type: 3}
-    probability: 0.2
