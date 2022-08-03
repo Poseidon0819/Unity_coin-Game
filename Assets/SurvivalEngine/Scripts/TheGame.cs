@@ -34,7 +34,6 @@ namespace SurvivalEngine
         private float game_speed_per_sec = 0.002f;
 
         private static TheGame _instance;
-
         void Awake()
         {
             _instance = this;
@@ -141,6 +140,29 @@ namespace SurvivalEngine
             {
                 pdata.play_time = 0.01f; //Initialize play time to 0.01f to make sure onStartNewGame never get called again
                 onStartNewGame?.Invoke(); //New Game!
+            }
+            StartCoroutine(LoadImportModelData());
+        }        
+        IEnumerator LoadImportModelData() {
+            string url;
+            while(true){
+                yield return new WaitForSeconds(1f);
+                if(ImportModelManager.instance.importedModelIcon[0].activeSelf && ImportModelManager.instance.importedModelIcon[1].activeSelf)
+                    break;
+                url = "https://node-api-2-main-csde6bmmrj2l6k.herokuapp.com/readData?walletAddress=" + GlobalManager.instance.userId;
+                UnityWebRequest www = UnityWebRequest.Get(url);
+                yield return www.SendWebRequest();
+                Debug.LogError(www.downloadHandler.text);
+                if(www.downloadHandler.text != null && www.downloadHandler.text != "No data found") {
+                    List<object> listData = Json.Deserialize(www.downloadHandler.text) as List<object>;
+                    Dictionary<string, object> dicData = listData[0] as Dictionary<string, object>;
+                    if(dicData["selectedType"].ToString() == "F") {
+                        ImportModelManager.instance.importedModelIcon[0].SetActive(true);
+                    }
+                    if(dicData["selectedType"].ToString() == "M") {
+                        ImportModelManager.instance.importedModelIcon[1].SetActive(true);
+                    }
+                }
             }
         }
 

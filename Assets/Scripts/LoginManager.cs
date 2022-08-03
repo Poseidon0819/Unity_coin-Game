@@ -50,6 +50,11 @@ public class LoginManager : MonoBehaviour
                         if (www.result != UnityWebRequest.Result.Success)
                         {
                             Debug.LogError(www.error);
+                            Dictionary<string, object> data = new Dictionary<string, object>();
+                            PlayerData.player_data = new PlayerData();
+                            PlayerData.player_data.FixData();
+                            SceneNav.GoTo("Game");
+                            break;
                         }
                         else
                         {

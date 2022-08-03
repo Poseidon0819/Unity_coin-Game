@@ -41,11 +41,11 @@ namespace SurvivalEngine
         protected Destructible destruct; //Can be nulls
         protected UniqueID unique_id; //Can be nulls
 
-        private PlayerCharacter building_character = null;
-        private bool building_mode = false; //Building mode means player is selecting where to build it, but it doesnt really exists yet
-        private bool position_set = false;
-        private bool visible_set = true;
-        private Color prev_color = Color.white;
+        public PlayerCharacter building_character = null;
+        public bool building_mode = false; //Building mode means player is selecting where to build it, but it doesnt really exists yet
+        public bool position_set = false;
+        public bool visible_set = true;
+        public Color prev_color = Color.white;
         private float manual_rotate = 0f;
         private float update_timer = 0f;
 
@@ -191,6 +191,7 @@ namespace SurvivalEngine
         {
             if (building_mode)
             {
+                Debug.LogError("position_set");
                 position_set = true;
                 transform.position = pos;
 
@@ -204,6 +205,7 @@ namespace SurvivalEngine
         {
             gameObject.SetActive(true);
             building_mode = false;
+            Debug.LogError("position_set");
             position_set = true;
             building_character = null;
 

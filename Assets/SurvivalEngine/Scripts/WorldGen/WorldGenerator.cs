@@ -83,7 +83,7 @@ namespace SurvivalEngine.WorldGen
                     string value = dicData["value"].ToString();
                     string[] items = value.Split("+");
                     for(int j = 0; j < items.Length; j++) {
-                        if(items[i] == "Water") {
+                        if(items[j] == "Water") {
                             List<BiomeData> tmp = new List<BiomeData>(this.biomes);
                             tmp.Add(waterBiom);
                             this.biomes = tmp.ToArray();
@@ -110,21 +110,21 @@ namespace SurvivalEngine.WorldGen
                         }
                     }
                 }
-                if(dicData["traity_type"].ToString() == "Size") {
+                if(dicData["trait_type"].ToString() == "Size") {
                     if(dicData["value"].ToString().Contains("Standard")) {
                         this.map_size = 100;
                         this.nb_zones = 10;
-                        this.iterations = 50;
+                        this.iterations = 100;
                     }
                     if(dicData["value"].ToString().Contains("Large")) {
                         this.map_size = 200;
                         this.nb_zones = 20;
-                        this.iterations = 100;
+                        this.iterations = 200;
                     }
                     if(dicData["value"].ToString().Contains("X-Large")) {
                         this.map_size = 300;
                         this.nb_zones = 30;
-                        this.iterations = 150;
+                        this.iterations = 300;
                     }
                 }
             }

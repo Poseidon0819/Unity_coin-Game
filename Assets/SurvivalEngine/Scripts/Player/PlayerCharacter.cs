@@ -868,7 +868,13 @@ namespace SurvivalEngine
                 return;
 
             CancelAction();
-
+            //User Import
+            if(ImportModelManager.instance.selectedModel != null) {
+                Buildable build = ImportModelManager.instance.selectedModel.GetComponent<Buildable>();
+                build.position_set = true;
+                build.building_mode = false;
+                ImportModelManager.instance.selectedModel = null;
+            }
             //Build mode
             if (character_craft.IsBuildMode())
             {

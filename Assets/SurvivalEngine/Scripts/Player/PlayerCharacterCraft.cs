@@ -291,11 +291,16 @@ namespace SurvivalEngine
         {
             if (current_buildable != null)
             {
+                Debug.LogError("cancelBuilding");
                 Destroy(current_buildable.gameObject);
                 current_buildable = null;
                 current_build_data = null;
                 build_callback = null;
                 clicked_build = false;
+            }
+            if(ImportModelManager.instance.selectedModel != null) {
+                ImportModelManager.instance.AddUserModelPool(ImportModelManager.instance.selectedModelName, ImportModelManager.instance.selectedModel);
+                ImportModelManager.instance.selectedModel = null;
             }
         }
 
