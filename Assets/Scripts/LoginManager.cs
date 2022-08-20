@@ -5,14 +5,26 @@ using UnityEngine.UI;
 using UnityEngine.Networking;
 using MiniJSON;
 using SurvivalEngine;
+using System.Runtime.InteropServices;
+
 
 public class LoginManager : MonoBehaviour
 {
+
+    [DllImport("__Internal")]
+    private static extern void Web3Connect();
+
+    [DllImport("__Internal")]
+    private static extern string ConnectAccount();
+
     // Start is called before the first frame update
     public InputField userIdInput;
     public InputField mapIdInput;
     public GameObject loginBtn;
     public GameObject loading;
+
+    private string account;
+
     public void OnLogin()
     {
         StartCoroutine("LoadData");
@@ -74,5 +86,24 @@ public class LoginManager : MonoBehaviour
                 }
             }
         }
+    }
+
+    public void OnWalletConnect()
+    {
+        Web3Connect();
+        OnConnected();
+    }
+
+    async private void OnConnected()
+    {
+        account = ConnectAccount();
+        while (account == "")
+        {
+            await new WaitForSeconds(1f);
+            account = ConnectAccount();
+            Debug.Log("Metamask Address: " + account);
+        };
+        PlayerPrefs.SetString("PlayerAddress", account);
+        Debug.Log("Wallet Address:" + account);
     }
 }
