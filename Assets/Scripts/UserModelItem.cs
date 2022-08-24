@@ -9,6 +9,7 @@ public class UserModelItem : MonoBehaviour
     public void OnSelect()
     {
         GameObject obj = ImportModelManager.instance.GetUserModel(modelName);
+        ImportModelManager.instance.CheckSelectedModel();
         ImportModelManager.instance.selectedModel = obj;
         ImportModelManager.instance.selectedModelName = modelName;
         Buildable build = obj.GetComponent<Buildable>();

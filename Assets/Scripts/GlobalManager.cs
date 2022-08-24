@@ -52,12 +52,16 @@ public class GlobalManager : MonoBehaviour
     private void OnComplete(GameObject importedModel)
     {
         GameObject newObj = Instantiate(ImportModelManager.instance.userModelPrefab);
+        newObj.transform.parent = ImportModelManager.instance.transform;
+        newObj.transform.localPosition = Vector3.zero;
         Buildable build = newObj.GetComponent<Buildable>();
         build.building_character = PlayerCharacter.Get();
-        newObj.SetActive(false);
         importedModel.transform.parent = newObj.transform;
         importedModel.transform.localPosition = Vector3.zero;
         _model = importedModel;
+        ImportModelManager.instance.importedModels[importedModel.name] = newObj;
+        ImportModelManager.instance.importedModelIcon[2].GetComponent<UserModelItem>().modelName = importedModel.name;
+        ImportModelManager.instance.importedModelIcon[2].SetActive(true);
         Debug.Log("Success!");
     }
     private void OnProgress(GltfImportStep step, int completed, int total)

@@ -17,6 +17,13 @@ public class ImportModelManager : MonoBehaviour
         instance = this;
         StartCoroutine(GlobalManager.instance.OnImportAssets());
     }
+    public void CheckSelectedModel()
+    {
+        if(this.selectedModel != null) {
+            this.AddUserModelPool(this.selectedModelName, this.selectedModel);
+            this.selectedModel = null;
+        }
+    }
     public GameObject GetUserModel(string modelName) {
         if(userModelPool.ContainsKey(modelName) && userModelPool[modelName].Count > 0) {
             GameObject obj = userModelPool[modelName][0];
