@@ -51,8 +51,8 @@ public class LoginManager : MonoBehaviour
                     break;
                 } else {
                     while(true) {
-                        url = GlobalManager.instance.baseUrl + "world?user_id=" + this.userIdInput.text + "&map_id=" + this.mapIdInput.text;
-                        GlobalManager.instance.userId = this.userIdInput.text;
+                        url = GlobalManager.instance.baseUrl + "world?user_id=" + this.account + "&map_id=" + this.mapIdInput.text;
+                        GlobalManager.instance.userId = this.account;
                         GlobalManager.instance.mapId = this.mapIdInput.text;
                         GlobalManager.instance.mapData = www.downloadHandler.text;
 
