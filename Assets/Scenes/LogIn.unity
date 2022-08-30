@@ -559,7 +559,7 @@ MonoBehaviour:
   userId: 
   mapId: 
   mapData: 
-  baseUrl: https://1a28-178-132-6-37.eu.ngrok.io/
+  baseUrl: https://bird-backend-server.herokuapp.com/
   assetBaseUrl: https://birdez-build-server.herokuapp.com/v1/storage/contents/
   getAssetListUrl: https://birdez-build-server.herokuapp.com/v1/assetPacks?owner=
   img: {fileID: 568522856}

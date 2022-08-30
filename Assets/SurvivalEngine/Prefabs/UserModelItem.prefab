@@ -218,7 +218,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: d9e97025a34281647a4060138350d632, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 264a3a732a3a6564782ad3d933e096d5, type: 3}
   m_Type: 0
   m_PreserveAspect: 1
   m_FillCenter: 1
@@ -399,3 +399,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   modelName: 
+  thumbnail: {fileID: 2350268120622211143}

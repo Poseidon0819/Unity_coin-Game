@@ -6,6 +6,7 @@ using UnityEngine.Networking;
 using MiniJSON;
 using SurvivalEngine;
 using System.Runtime.InteropServices;
+using Photon.Pun;
 
 
 public class LoginManager : MonoBehaviour
@@ -25,8 +26,16 @@ public class LoginManager : MonoBehaviour
 
     private string account;
 
+    private void Start()
+    {
+        this.ConnectToPhoton();
+    }
     public void OnLogin()
     {
+        // this.account = "0xfa455c51CF7605E6E4695D6426A81765DB9c44fE";
+        if(this.account == null || this.account == "") {
+            return;
+        }
         StartCoroutine("LoadData");
     }
     IEnumerator LoadData()
@@ -62,11 +71,11 @@ public class LoginManager : MonoBehaviour
                         if (www.result != UnityWebRequest.Result.Success)
                         {
                             Debug.LogError(www.error);
-                            Dictionary<string, object> data = new Dictionary<string, object>();
-                            PlayerData.player_data = new PlayerData();
-                            PlayerData.player_data.FixData();
-                            SceneNav.GoTo("Game");
-                            break;
+                            // Dictionary<string, object> data = new Dictionary<string, object>();
+                            // PlayerData.player_data = new PlayerData();
+                            // PlayerData.player_data.FixData();
+                            // SceneNav.GoTo("Game");
+                            // break;
                         }
                         else
                         {
@@ -105,5 +114,12 @@ public class LoginManager : MonoBehaviour
         };
         PlayerPrefs.SetString("PlayerAddress", account);
         Debug.Log("Wallet Address:" + account);
+    }
+    void ConnectToPhoton()
+    {
+        Debug.LogError("ConnectToPhoton");
+        PhotonNetwork.GameVersion = "10"; //1
+        PhotonNetwork.OfflineMode = true;
+        PhotonNetwork.ConnectUsingSettings(); //2
     }
 }

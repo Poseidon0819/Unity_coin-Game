@@ -25,6 +25,7 @@ public class GlobalManager : MonoBehaviour
     public string getAssetListUrl;
     public Image img;
     public List<ImportedAsset> assets = new List<ImportedAsset>();
+    int importIdx = 0;
     private GameObject _model;
     private GltfImportTask _task;
     ImportedAsset currentLoadingAsset;
@@ -60,9 +61,19 @@ public class GlobalManager : MonoBehaviour
         importedModel.transform.localPosition = Vector3.zero;
         _model = importedModel;
         ImportModelManager.instance.importedModels[importedModel.name] = newObj;
-        ImportModelManager.instance.importedModelIcon[2].GetComponent<UserModelItem>().modelName = importedModel.name;
-        ImportModelManager.instance.importedModelIcon[2].SetActive(true);
-        Debug.Log("Success!");
+        Debug.LogError("Success!");
+        if(importIdx < ImportModelManager.instance.importedModelIcon.Count) {
+            ImportModelManager.instance.importedModelIcon[importIdx].SetActive(true);
+            ImportModelManager.instance.importedModelIcon[importIdx].GetComponent<UserModelItem>().SetData(currentLoadingAsset);
+            this.importIdx ++;
+            currentLoadingAsset = null;
+            if(this.assets.Count > importIdx)
+                this.ImportModel(this.assets[importIdx]);
+            else
+                ImportModelManager.instance.refreshBtn.SetActive(true);
+        } else {
+            ImportModelManager.instance.refreshBtn.SetActive(true);
+        }
     }
     private void OnProgress(GltfImportStep step, int completed, int total)
     {
@@ -76,12 +87,12 @@ public class GlobalManager : MonoBehaviour
         }
 
         // spin model about y-axis
-        if (_model != null)
-            _model.transform.Rotate(0, 1, 0);
+        // if (_model != null)
+            // _model.transform.Rotate(0, 1, 0);
     }
     public IEnumerator OnImportAssets()
     {
-        var url = getAssetListUrl + "0xB34Ea9c0516Ccf82869d226D631caF62D6aE55E6";
+        var url = getAssetListUrl + GlobalManager.instance.userId;
         Debug.LogError(url);
         UnityWebRequest www = UnityWebRequest.Get(url);
         yield return www.SendWebRequest();
@@ -96,6 +107,7 @@ public class GlobalManager : MonoBehaviour
             Dictionary<string, object> data = Json.Deserialize(www.downloadHandler.text) as Dictionary<string, object>;
             List<object> listData = data["data"] as List<object>;
             int i, j;
+            this.assets.Clear();
             for(i = 0; i < listData.Count; i++) {
                 Dictionary<string, object> dicData = listData[i] as Dictionary<string, object>;
                 List<object> assetData = dicData["assets"] as List<object>;
@@ -113,9 +125,20 @@ public class GlobalManager : MonoBehaviour
                         asset.contents.Add(name, content[name].ToString());
                     }
                     this.assets.Add(asset);
-                    ImportModel(asset);
                 }
             }
+            Debug.LogError("Asset Cnt : " + assets.Count);
+            this.StartImportModel();
+        }
+    }
+
+    public void StartImportModel()
+    {
+        importIdx = 0;
+        if(assets.Count > 0) {
+            this.ImportModel(assets[importIdx]);
+        } else {
+            ImportModelManager.instance.refreshBtn.SetActive(true);
         }
     }
 }

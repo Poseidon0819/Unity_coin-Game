@@ -11,10 +11,20 @@ public class ImportModelManager : MonoBehaviour
     public string selectedModelName;
     public Dictionary<string, List<GameObject>> userModelPool = new Dictionary<string, List<GameObject>>();
     public List<GameObject> importedModelIcon;
+    public GameObject refreshBtn;
     // Start is called before the first frame update
     void Start()
     {
         instance = this;
+        this.OnRefreshModel();
+    }
+    public void OnRefreshModel()
+    {
+        this.refreshBtn.SetActive(false);
+        for(int i = 0; i < this.importedModelIcon.Count; i++)
+        {
+            this.importedModelIcon[i].SetActive(false);
+        }
         StartCoroutine(GlobalManager.instance.OnImportAssets());
     }
     public void CheckSelectedModel()
