@@ -28,6 +28,9 @@ namespace SurvivalEngine
 
         void Update()
         {
+            if(this.character.photonView != null && !this.character.photonView.IsMine)
+                return;
+                
             if (TheGame.Get().IsPaused())
                 return;
 

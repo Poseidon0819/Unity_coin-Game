@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.Networking;
+using UnityEngine.UI;
 using MiniJSON;
+using Photon.Pun;
 
 namespace SurvivalEngine
 {
@@ -33,7 +35,12 @@ namespace SurvivalEngine
         private float game_speed = 1f;
         private float game_speed_per_sec = 0.002f;
 
-        private static TheGame _instance;
+        public static TheGame _instance;
+
+        public GameObject mainCanvas;
+        public InputField chatObj;
+        public GameObject character;
+        public GameObject guestCharacter;
         void Awake()
         {
             _instance = this;
@@ -42,6 +49,13 @@ namespace SurvivalEngine
 
         private void Start()
         {
+            if(GlobalManager.instance.playMode != PlayMode.Guest) {
+                PhotonNetwork.Instantiate("PlayerCharacter", Vector3.zero, Quaternion.identity);
+                this.guestCharacter.SetActive(false);
+            } else{
+                guestCharacter.SetActive(true);
+            }
+            this.chatObj.gameObject.SetActive(false);
             PlayerData pdata = PlayerData.Get();
             GameObject spawn_parent = new GameObject("SaveFileSpawns");
             string scene = SceneNav.GetCurrentScene();
@@ -142,6 +156,7 @@ namespace SurvivalEngine
                 onStartNewGame?.Invoke(); //New Game!
             }
             // StartCoroutine(LoadImportModelData());
+            StartCoroutine(this.AutoSave());
         }        
         IEnumerator LoadImportModelData() {
             string url;
@@ -166,10 +181,29 @@ namespace SurvivalEngine
             }
         }
 
+        public void OnChat()
+        {
+            PlayerCharacter.Get().photonView.RPC("OnChat", RpcTarget.All, this.chatObj.text);
+            this.chatObj.gameObject.SetActive(false);
+            this.UnpauseScripts();
+        }
+
         void Update()
         {
             if (IsPaused())
                 return;
+
+            if(Input.GetKeyDown(KeyCode.K))
+            {
+                this.chatObj.text = "";
+                this.chatObj.gameObject.SetActive(true);
+                this.chatObj.ActivateInputField();
+                this.PauseScripts();
+            }
+            if(Input.GetKeyDown(KeyCode.M))
+            {
+                Application.OpenURL("https://birdezkingdom.com/maps");
+            }
 
             //Check if dead
             PlayerCharacter character = PlayerCharacter.GetFirst();
@@ -425,9 +459,17 @@ namespace SurvivalEngine
         //---- Load / Save -----
 
         //Save is not static, because a scene and save file must be loaded before you can save
-
+        IEnumerator AutoSave()
+        {
+            while(true) {
+                yield return new WaitForSeconds(10f);
+                this.Save();
+            }
+        }
         public bool Save()
         {
+            if(GlobalManager.instance.playMode == PlayMode.Guest)
+                return true;
             // if (!SaveSystem.IsValidFilename(filename))
             //     return false; //Failed
 

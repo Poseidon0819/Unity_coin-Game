@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using Photon.Pun;
+using FrostweepGames.WebGLPUNVoice;
+using LivelyChatBubbles;
 
 namespace SurvivalEngine
 {
-
     public enum PlayerInteractBehavior
     {
         MoveAndInteract = 0, //When clicking on object, will auto move to it, then interact with it
@@ -57,7 +59,10 @@ namespace SurvivalEngine
         private PlayerCharacterClimb character_climb;
         private PlayerCharacterRide character_ride;
         private PlayerCharacterAnim character_anim;
-
+        public PhotonView photonView;
+        public Recorder recorder;
+        public TextMesh userName;
+        ChatMouthpiece chatPiece;
         private Vector3 move;
         private Vector3 facing;
         private Vector3 move_average;
@@ -102,7 +107,9 @@ namespace SurvivalEngine
             if (player_first == null || player_id < player_first.player_id)
                 player_first = this;
 
-            players_list.Add(this);
+            if(GetComponent<PhotonView>().IsMine)
+                players_list.Add(this);
+            photonView = GetComponent<PhotonView>();
             rigid = GetComponent<Rigidbody>();
             collide = GetComponentInChildren<CapsuleCollider>();
             character_attr = GetComponent<PlayerCharacterAttribute>();
@@ -114,6 +121,7 @@ namespace SurvivalEngine
             character_climb = GetComponent<PlayerCharacterClimb>();
             character_ride = GetComponent<PlayerCharacterRide>();
             character_anim = GetComponent<PlayerCharacterAnim>();
+            chatPiece = GetComponent<ChatMouthpiece>();
             facing = transform.forward;
             prev_pos = transform.position;
             fall_vect = Vector3.down * fall_speed;
@@ -138,10 +146,22 @@ namespace SurvivalEngine
 
             if (player_id < 0)
                 Debug.LogError("Player ID should be 0 or more: -1 is reserved to indicate neutral (no player)");
+
+            this.userName.text = photonView.Controller.NickName;
         }
 
+        [PunRPC]
+        void OnChat(string msg)
+        {
+            this.chatPiece.Speak(msg);
+            Debug.LogError(msg);
+        }
         private void Update()
         {
+            this.userName.transform.rotation = Camera.main.transform.rotation;
+            if(this.photonView != null && !this.photonView.IsMine)
+                return;
+
             if (TheGame.Get().IsPaused())
                 return;
 
@@ -184,6 +204,9 @@ namespace SurvivalEngine
 
         void FixedUpdate()
         {
+            if(this.photonView != null && !this.photonView.IsMine)
+                return;
+
             if (TheGame.Get().IsPaused())
                 return;
 

@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
 
 namespace SurvivalEngine
 {
@@ -62,41 +63,47 @@ namespace SurvivalEngine
 
         void Update()
         {
+            if(this.character.photonView != null && !this.character.photonView.IsMine)
+                return;
+
             bool player_paused = TheGame.Get().IsPausedByPlayer();
             bool gameplay_paused = TheGame.Get().IsPausedByScript();
             animator.enabled = !player_paused;
 
             if (animator.enabled)
             {
-                SetAnimBool(move_anim, !gameplay_paused && character.IsMoving());
-                SetAnimBool(craft_anim, !gameplay_paused && character.Crafting.IsCrafting());
-                SetAnimBool(sleep_anim, character.IsSleeping());
-                SetAnimBool(fish_anim, character.IsFishing());
-                SetAnimBool(ride_anim, character.IsRiding());
-                SetAnimBool(swim_anim, character.IsSwimming());
-                SetAnimBool(climb_anim, character.IsClimbing());
+                this.character.photonView.RPC("SetAnimBool", RpcTarget.All, move_anim, !gameplay_paused && character.IsMoving());
+                this.character.photonView.RPC("SetAnimBool", RpcTarget.All, craft_anim, !gameplay_paused && character.Crafting.IsCrafting());
+                this.character.photonView.RPC("SetAnimBool", RpcTarget.All, sleep_anim, character.IsSleeping());
+                this.character.photonView.RPC("SetAnimBool", RpcTarget.All, fish_anim, character.IsFishing());
+                this.character.photonView.RPC("SetAnimBool", RpcTarget.All, ride_anim, character.IsRiding());
+                this.character.photonView.RPC("SetAnimBool", RpcTarget.All, swim_anim, character.IsSwimming());
+                this.character.photonView.RPC("SetAnimBool", RpcTarget.All, climb_anim, character.IsClimbing());
 
                 Vector3 move_vect = character.GetMoveNormalized();
                 float mangle = Vector3.SignedAngle(character.GetFacing(), move_vect, Vector3.up);
                 Vector3 move_side = new Vector3(Mathf.Sin(mangle * Mathf.Deg2Rad), 0f, Mathf.Cos(mangle * Mathf.Deg2Rad));
                 move_side = move_side * move_vect.magnitude;
-                SetAnimFloat(move_side_x, move_side.x);
-                SetAnimFloat(move_side_z, move_side.z);
+                this.character.photonView.RPC("SetAnimFloat", RpcTarget.All, move_side_x, move_side.x);
+                this.character.photonView.RPC("SetAnimFloat", RpcTarget.All, move_side_z, move_side.z);
             }
         }
 
+        [PunRPC]
         public void SetAnimBool(string id, bool value)
         {
             if (!string.IsNullOrEmpty(id))
                 animator.SetBool(id, value);
         }
 
+        [PunRPC]
         public void SetAnimFloat(string id, float value)
         {
             if (!string.IsNullOrEmpty(id))
                 animator.SetFloat(id, value);
         }
 
+        [PunRPC]
         public void SetAnimTrigger(string id)
         {
             if (!string.IsNullOrEmpty(id))

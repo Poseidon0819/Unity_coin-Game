@@ -2561,6 +2561,7 @@ namespace Photon.Realtime
         /// <remarks>This method is not responsible to keep up the state of a LoadBalancingClient. Calling base.DebugReturn on overrides is optional.</remarks>
         public virtual void DebugReturn(DebugLevel level, string message)
         {
+            Debug.LogError(message);
             if (this.LoadBalancingPeer.DebugOut != DebugLevel.ALL && level > this.LoadBalancingPeer.DebugOut)
             {
                 return;
@@ -2951,6 +2952,7 @@ namespace Photon.Realtime
         /// <remarks>This method is essential to update the internal state of a LoadBalancingClient. Overriding methods must call base.OnStatusChanged.</remarks>
         public virtual void OnStatusChanged(StatusCode statusCode)
         {
+            Debug.LogError(statusCode);
             switch (statusCode)
             {
                 case StatusCode.Connect:

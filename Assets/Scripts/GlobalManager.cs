@@ -6,6 +6,13 @@ using UnityEngine.Networking;
 using MiniJSON;
 using Piglet;
 using SurvivalEngine;
+public enum PlayMode
+{
+    None,
+    Guest,
+    Visitor,
+    Owner
+}
 public class ImportedAsset
 {
     public string id;
@@ -25,12 +32,14 @@ public class GlobalManager : MonoBehaviour
     public string getAssetListUrl;
     public Image img;
     public List<ImportedAsset> assets = new List<ImportedAsset>();
+    public PlayMode playMode;
     int importIdx = 0;
     private GameObject _model;
     private GltfImportTask _task;
     ImportedAsset currentLoadingAsset;
     void Start()
     {
+        this.playMode = PlayMode.None;
         instance = this;
         DontDestroyOnLoad(this);
     }

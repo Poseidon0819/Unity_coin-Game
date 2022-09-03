@@ -1161,6 +1161,9 @@ namespace Photon.Pun
             NetworkingClient.AppId = appSettings.AppIdRealtime;
             GameVersion = appSettings.AppVersion;
 
+            Debug.LogError(NetworkingClient.AppId);
+            Debug.LogError(appSettings.Protocol);
+
 
 
             if (startInOfflineMode)

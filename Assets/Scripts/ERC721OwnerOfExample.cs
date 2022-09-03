@@ -6,12 +6,12 @@ public class ERC721OwnerOfExample : MonoBehaviour
 {
     async void Start()
     {
-        string chain = "moonbeam";
-        string network = "testnet";
-        string contract = "0xcB0cbcE06860f6C30C62560f5eFBF918150e056E";
+        string chain = "ethereum";
+        string network = "mainnet";
+        string contract = "0xc09d1aa618ae8a4b54c5ac60efb394d38bf79d03";
         string tokenId = "1";
 
         string ownerOf = await ERC721.OwnerOf(chain, network, contract, tokenId);
-        print(ownerOf);
+        Debug.LogError(ownerOf);
     }
 }

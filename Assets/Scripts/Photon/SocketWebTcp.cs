@@ -87,6 +87,7 @@ namespace ExitGames.Client.Photon
 
         public override bool Connect()
         {
+            Debug.LogError("ConnectSocket");
             //bool baseOk = base.Connect();
             //if (!baseOk)
             //{
