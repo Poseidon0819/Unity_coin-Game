@@ -148,6 +148,12 @@ namespace SurvivalEngine
                 Debug.LogError("Player ID should be 0 or more: -1 is reserved to indicate neutral (no player)");
 
             this.userName.text = photonView.Controller.NickName;
+            this.Attributes.ResetAttribute(AttributeType.Health);
+            this.Attributes.ResetAttribute(AttributeType.Energy);
+            this.Attributes.ResetAttribute(AttributeType.Happiness);
+            this.Attributes.ResetAttribute(AttributeType.Hunger);
+            this.Attributes.ResetAttribute(AttributeType.Thirst);
+            this.Attributes.ResetAttribute(AttributeType.Heat);
         }
 
         [PunRPC]
@@ -896,6 +902,10 @@ namespace SurvivalEngine
                 Buildable build = ImportModelManager.instance.selectedModel.GetComponent<Buildable>();
                 build.position_set = true;
                 build.building_mode = false;
+                UserModelObjectItem item = ImportModelManager.instance.selectedModel.GetComponent<UserModelObjectItem>();
+                for(int i = 0; i < item.userModels.Count; i++) {
+                    GlobalManager.instance.saveingObjects.Add(item.userModels[i].transform);
+                }
                 ImportModelManager.instance.selectedModel = null;
             }
             //Build mode
@@ -931,6 +941,8 @@ namespace SurvivalEngine
                 OnClickFloor(pos);
                 return;
             }
+            if(GlobalManager.instance.playMode != PlayMode.Owner && !GlobalManager.instance.isTest)
+                return;
 
             CancelAction();
             selectable.Select();

@@ -793,7 +793,7 @@ PlayerSettings:
   webGLNameFilesAsHashes: 0
   webGLDataCaching: 1
   webGLDebugSymbols: 0
-  webGLEmscriptenArgs: 
+  webGLEmscriptenArgs: -s ERROR_ON_UNDEFINED_SYMBOLS=0
   webGLModulesDirectory: 
   webGLTemplate: PROJECT:Web3GL-2020x
   webGLAnalyzeBuildSize: 0
@@ -830,7 +830,7 @@ PlayerSettings:
   managedStrippingLevel: {}
   incrementalIl2cppBuild: {}
   suppressCommonWarnings: 1
-  allowUnsafeCode: 0
+  allowUnsafeCode: 1
   useDeterministicCompilation: 0
   enableRoslynAnalyzers: 1
   additionalIl2CppArgs: 
@@ -839,7 +839,7 @@ PlayerSettings:
   assemblyVersionValidation: 1
   gcWBarrierValidation: 0
   apiCompatibilityLevelPerPlatform:
-    WebGL: 3
+    WebGL: 6
   m_RenderingPath: 1
   m_MobileRenderingPath: 1
   metroPackageName: Template_3D

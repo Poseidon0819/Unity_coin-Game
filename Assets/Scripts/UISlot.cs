@@ -118,14 +118,14 @@ namespace SurvivalEngine
             }
 
             //Keyboard shortcut
-            int key_index = (index + 1);
-            if (key_index == 10)
-                key_index = 0;
-            if (key_index < 10 && PlayerControls.Get().IsPressedByName(key_index.ToString()))
-            {
-                if (onPressKey != null)
-                    onPressKey.Invoke(this);
-            }
+            // int key_index = (index + 1);
+            // if (key_index == 10)
+            //     key_index = 0;
+            // if (key_index < 10 && PlayerControls.Get().IsPressedByName(key_index.ToString()))
+            // {
+            //     if (onPressKey != null)
+            //         onPressKey.Invoke(this);
+            // }
 
             bool use_mouse = PlayerControlsMouse.Get().IsUsingMouse();
             key_hover = false;

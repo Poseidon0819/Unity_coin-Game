@@ -62,7 +62,7 @@ namespace SurvivalEngine.WorldGen
         
         private void Start()
         {
-            Debug.LogError(GlobalManager.instance.mapData);
+            // Debug.LogError(GlobalManager.instance.mapData);
             this.LoadMapData();
             if (mode == WorldGeneratorMode.Runtime && Application.isPlaying)
             {
@@ -151,7 +151,7 @@ namespace SurvivalEngine.WorldGen
 
         public void GenerateRandomWorld(int seed)
         {
-            Debug.LogError(seed);
+            // Debug.LogError(seed);
             this.seed = seed;
             ClearWorld();
             GenerateZones();

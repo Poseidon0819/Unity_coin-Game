@@ -9,7 +9,6 @@ using System.Runtime.InteropServices;
 using Photon.Pun;
 using Photon.Realtime;
 
-
 public class LoginManager : MonoBehaviourPunCallbacks
 {
 
@@ -21,11 +20,17 @@ public class LoginManager : MonoBehaviourPunCallbacks
 
     // Start is called before the first frame update
     public InputField userIdInput;
-    public InputField mapIdInput;
+    public Text mapIdInput;
     public GameObject loginBtn;
     public GameObject loginVisitorBtn;
     public GameObject loading;
+    public GameObject LoginUI;
+    public GameObject RegUI;
     public Text loadingDesc;
+
+#if UNITY_WEBGL
+    public WebGLTransfer20 transfer;
+#endif
     private string account;
     void Awake()
     {
@@ -35,9 +40,14 @@ public class LoginManager : MonoBehaviourPunCallbacks
     }
     private void Start()
     {
-        // this.account = "0xfa455c51CF7605E6E4695D6426A81765DB9c44fE";
+        #if UNITY_WEBGL || WEBSOCKET || ((UNITY_XBOXONE || UNITY_GAMECORE) && UNITY_EDITOR)
+        Debug.LogError("gdgagdsa");
+        #endif
+
         this.ConnectToPhoton();
         this.loadingDesc.text = "";
+        this.LoginUI.SetActive(false);
+        this.RegUI.SetActive(true);
         // StartCoroutine(GetSelectedMapId());
     }
     IEnumerator GetSelectedMapId()
@@ -59,10 +69,35 @@ public class LoginManager : MonoBehaviourPunCallbacks
                 if(data != null && data.ContainsKey("map_id"))
                 {
                     this.mapIdInput.text = data["map_id"].ToString();
+                    StartCoroutine(GetUserInfo());
                     break;
                 }
             }
             yield return new WaitForSeconds(0.5f);
+        }
+    }
+    
+    IEnumerator GetUserInfo()
+    {
+        string url = GlobalManager.instance.baseUrl + "user/getInfo?id=" + this.account;
+        Debug.LogError(url);
+        UnityWebRequest www = UnityWebRequest.Get(url);
+        yield return www.SendWebRequest();
+
+        if (www.result != UnityWebRequest.Result.Success)
+        {
+            Debug.LogError(www.error);
+        }
+        else
+        {
+            Debug.LogError(www.downloadHandler.text);
+            if(www.downloadHandler.text != "") {
+                Dictionary<string, object> dicData = Json.Deserialize(www.downloadHandler.text) as Dictionary<string, object>;
+                if(dicData["user_name"] != null)
+                    userIdInput.text = dicData["user_name"].ToString();
+            }
+            this.RegUI.SetActive(false);
+            this.LoginUI.SetActive(true);
         }
     }
     public void OnLoginNormal()
@@ -72,6 +107,8 @@ public class LoginManager : MonoBehaviourPunCallbacks
     }
     void OnLogin()
     {
+        if(this.userIdInput.text == "")
+            return;
         if(this.account == null || this.account == "") {
             return;
         }
@@ -99,12 +136,13 @@ public class LoginManager : MonoBehaviourPunCallbacks
         string tokenId = this.mapIdInput.text;
 
         string ownerOf = await ERC721.OwnerOf(chain, network, contract, tokenId);
+        ownerOf = ownerOf.ToLower();
         if(this.account == ownerOf) {
             GlobalManager.instance.playMode = PlayMode.Owner;
         } else {
             GlobalManager.instance.playMode = PlayMode.Guest;
         }
-        Debug.LogError(ownerOf);
+        // Debug.LogError(ownerOf);
     }
     void SetLoading(bool isLoading)
     {
@@ -143,7 +181,8 @@ public class LoginManager : MonoBehaviourPunCallbacks
                     break;
                 } else {
                     while(true) {
-                        url = GlobalManager.instance.baseUrl + "world?user_id=" + this.account + "&map_id=" + this.mapIdInput.text;
+                        url = GlobalManager.instance.baseUrl + "world/getWorlds?user_id=" + this.account + "&user_name=" + this.userIdInput.text + "&map_id=" + this.mapIdInput.text;
+                        Debug.LogError(url);
                         GlobalManager.instance.userId = this.account;
                         GlobalManager.instance.mapId = this.mapIdInput.text;
                         GlobalManager.instance.mapData = www.downloadHandler.text;
@@ -162,10 +201,11 @@ public class LoginManager : MonoBehaviourPunCallbacks
                         }
                         else
                         {
-                            Debug.LogError(www.downloadHandler.text.Length);
-                            Dictionary<string, object> data = Json.Deserialize(www.downloadHandler.text) as Dictionary<string, object>;
+                            Debug.LogError(www.downloadHandler.text);
+                            List<object> listData = Json.Deserialize(www.downloadHandler.text) as List<object>;
                             PlayerData.player_data = new PlayerData();
-                            if(data.ContainsKey("user_id")) {
+                            if(listData != null && listData.Count > 0) {
+                                Dictionary<string, object> data = listData[0] as Dictionary<string, object>;
                                 PlayerData.player_data.LoadSaveData(data);
                             } else {
                                 PlayerData.player_data.FixData();
@@ -223,7 +263,7 @@ public class LoginManager : MonoBehaviourPunCallbacks
 
     public override void OnJoinedRoom()
     {
-        Debug.LogError("heelo " + PhotonNetwork.CurrentRoom.Name);
+        // Debug.LogError("heelo " + PhotonNetwork.CurrentRoom.Name);
         // 4
         if (PhotonNetwork.IsMasterClient)
         {
@@ -236,8 +276,15 @@ public class LoginManager : MonoBehaviourPunCallbacks
 
     public void OnWalletConnect()
     {
-        Web3Connect();
-        OnConnectedWallet();
+        if(GlobalManager.instance.isTest) {
+            this.account = "0x0241d725f8bd03188f9f4c8ff92efbb6791c860f";
+            // this.account = "0xfa455c51CF7605E6E4695D6426A81765DB9c44fE";
+            this.mapIdInput.text = "2498";
+            StartCoroutine(GetUserInfo());
+        } else {
+            Web3Connect();
+            OnConnectedWallet();
+        }
     }
 
     async private void OnConnectedWallet()

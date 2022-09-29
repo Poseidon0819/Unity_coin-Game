@@ -95,8 +95,29 @@ namespace SurvivalEngine
             }
         }
 
+        public void TakeItem(InventoryData inventory, string id, string uid, int quantity, float durabil)
+        {
+            if (!character.IsDoingAction() && inventory.CanTakeItem(id, quantity))
+            {
+                character.TriggerAction(0.4f, () =>
+                {
+                    //Make sure wasnt destroyed during the 0.4 sec
+                    if (inventory.CanTakeItem(id, quantity))
+                    {
+                        PlayerData pdata = PlayerData.Get();
+                        DroppedItemData dropped_item = pdata.GetDroppedItem(uid);
+                        float durability = dropped_item != null ? dropped_item.durability : durabil;
+                        int slot = inventory.AddItem(id, quantity, durability, uid); //Add to inventory
+
+                        // ItemTakeFX.DoTakeFX(item.transform.position, item.data, inventory.type, slot);
+                    }
+                });
+            }
+        }
+
         public void TakeItem(InventoryData inventory, Item item)
         {
+            Debug.LogError(item.data.id + " : " + item.GetUID() + " : " + item.data.durability);
             if (item != null && !character.IsDoingAction() && inventory.CanTakeItem(item.data.id, item.quantity))
             {
                 character.FaceTorward(item.transform.position);

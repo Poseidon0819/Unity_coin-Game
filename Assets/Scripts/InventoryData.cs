@@ -35,6 +35,8 @@ namespace SurvivalEngine
             sendData["quantity"] = this.quantity;
             sendData["durability"] = this.durability;
             sendData["uid"] = this.uid;
+            sendData["icon_id"] = this.GetItem().icon.name;
+            sendData["item_name"] = this.GetItem().title;
             return sendData;
         }
         public InventoryItemData(){}

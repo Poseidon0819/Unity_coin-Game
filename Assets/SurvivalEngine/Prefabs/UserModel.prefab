@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 1522064619}
   - component: {fileID: 1522064618}
   - component: {fileID: 1522064617}
+  - component: {fileID: 3358146155946798579}
   m_Layer: 0
   m_Name: UserModel
   m_TagString: Untagged
@@ -113,3 +114,15 @@ NavMeshObstacle:
   m_CarveOnlyStationary: 1
   m_Center: {x: 0, y: 0, z: 0}
   m_TimeToStationary: 0.5
+--- !u!114 &3358146155946798579
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 24799630365986894}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4c581f80d0b540045b3d8a321ae9ab67, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

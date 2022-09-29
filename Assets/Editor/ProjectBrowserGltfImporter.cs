@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using UnityEditor;
-using UnityEditor.SceneManagement;
+// using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityGLTF;
 
@@ -31,7 +31,7 @@ namespace Piglet
         /// </summary>
         private static PigletOptions _pigletOptions;
 
-        [InitializeOnLoadMethod]
+        // [InitializeOnLoadMethod]
         private static void Setup()
         {
             _importTask = null;
@@ -260,11 +260,11 @@ namespace Piglet
                     //
                     // Note: Prefab Mode was introduced in Unity 2018.3.
 #if UNITY_2018_3_OR_NEWER
-                    if (StageUtility.GetCurrentStageHandle()
-                        != StageUtility.GetMainStageHandle())
-                    {
-                        StageUtility.GoToMainStage();
-                    }
+                    // if (StageUtility.GetCurrentStageHandle()
+                    //     != StageUtility.GetMainStageHandle())
+                    // {
+                    //     StageUtility.GoToMainStage();
+                    // }
 #endif
 
                     GameObject instance = (GameObject)PrefabUtility

@@ -41,6 +41,7 @@ namespace SurvivalEngine
         public InputField chatObj;
         public GameObject character;
         public GameObject guestCharacter;
+        public GameObject ownerUI;
         void Awake()
         {
             _instance = this;
@@ -54,6 +55,11 @@ namespace SurvivalEngine
                 this.guestCharacter.SetActive(false);
             } else{
                 guestCharacter.SetActive(true);
+            }
+            if(GlobalManager.instance.playMode == PlayMode.Owner || GlobalManager.instance.isTest) {
+                this.ownerUI.SetActive(true);
+            } else {
+                this.ownerUI.SetActive(false);
             }
             this.chatObj.gameObject.SetActive(false);
             PlayerData pdata = PlayerData.Get();
@@ -158,28 +164,28 @@ namespace SurvivalEngine
             // StartCoroutine(LoadImportModelData());
             StartCoroutine(this.AutoSave());
         }        
-        IEnumerator LoadImportModelData() {
-            string url;
-            while(true){
-                yield return new WaitForSeconds(1f);
-                if(ImportModelManager.instance.importedModelIcon[0].activeSelf && ImportModelManager.instance.importedModelIcon[1].activeSelf)
-                    break;
-                url = "https://node-api-2-main-csde6bmmrj2l6k.herokuapp.com/readData?walletAddress=" + GlobalManager.instance.userId;
-                UnityWebRequest www = UnityWebRequest.Get(url);
-                yield return www.SendWebRequest();
-                Debug.LogError(www.downloadHandler.text);
-                if(www.downloadHandler.text != null && www.downloadHandler.text != "No data found") {
-                    List<object> listData = Json.Deserialize(www.downloadHandler.text) as List<object>;
-                    Dictionary<string, object> dicData = listData[0] as Dictionary<string, object>;
-                    if(dicData["selectedType"].ToString() == "F") {
-                        ImportModelManager.instance.importedModelIcon[0].SetActive(true);
-                    }
-                    if(dicData["selectedType"].ToString() == "M") {
-                        ImportModelManager.instance.importedModelIcon[1].SetActive(true);
-                    }
-                }
-            }
-        }
+        // IEnumerator LoadImportModelData() {
+        //     string url;
+        //     while(true){
+        //         yield return new WaitForSeconds(1f);
+        //         if(ImportModelManager.instance.importedModelIcon[0].activeSelf && ImportModelManager.instance.importedModelIcon[1].activeSelf)
+        //             break;
+        //         url = "https://node-api-2-main-csde6bmmrj2l6k.herokuapp.com/readData?walletAddress=" + GlobalManager.instance.userId;
+        //         UnityWebRequest www = UnityWebRequest.Get(url);
+        //         yield return www.SendWebRequest();
+        //         Debug.LogError(www.downloadHandler.text);
+        //         if(www.downloadHandler.text != null && www.downloadHandler.text != "No data found") {
+        //             List<object> listData = Json.Deserialize(www.downloadHandler.text) as List<object>;
+        //             Dictionary<string, object> dicData = listData[0] as Dictionary<string, object>;
+        //             if(dicData["selectedType"].ToString() == "F") {
+        //                 ImportModelManager.instance.importedModelIcon[0].SetActive(true);
+        //             }
+        //             if(dicData["selectedType"].ToString() == "M") {
+        //                 ImportModelManager.instance.importedModelIcon[1].SetActive(true);
+        //             }
+        //         }
+        //     }
+        // }
 
         public void OnChat()
         {
@@ -468,7 +474,7 @@ namespace SurvivalEngine
         }
         public bool Save()
         {
-            if(GlobalManager.instance.playMode == PlayMode.Guest)
+            if(GlobalManager.instance.playMode != PlayMode.Owner)
                 return true;
             // if (!SaveSystem.IsValidFilename(filename))
             //     return false; //Failed
@@ -490,7 +496,7 @@ namespace SurvivalEngine
         }
         IEnumerator SendSaveData(WWWForm form)
         {
-            var url = GlobalManager.instance.baseUrl +"worlds/create";
+            var url = GlobalManager.instance.baseUrl +"world/create";
 
             UnityWebRequest www = UnityWebRequest.Post(url, form);
             yield return www.SendWebRequest();

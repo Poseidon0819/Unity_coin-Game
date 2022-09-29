@@ -9,14 +9,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9f3758f8f58fdef43803eb9be1df0608, type: 3}
+  m_Script: {fileID: 11500000, guid: 6208a23fd7543ef409b74d90f53a2387, type: 3}
   m_Name: PhotonServerSettings
   m_EditorClassIdentifier: 
   AppSettings:
     AppIdRealtime: 407a65e3-f6a4-493a-b445-7ef45f923d13
     AppIdFusion: 
-    AppIdChat: b8cc6eac-d936-4efa-a7bd-de027b645461
-    AppIdVoice: 6ab71ef3-4b91-4b35-85dd-7acb3ac2cab8
+    AppIdChat: 
+    AppIdVoice: 
     AppVersion: 1.0
     UseNameServer: 1
     FixedRegion: us
@@ -28,34 +28,21 @@ MonoBehaviour:
     AuthMode: 0
     EnableLobbyStatistics: 0
     NetworkLogging: 1
-  DevRegion: eu
+  DevRegion: 
   PunLogging: 0
   EnableSupportLogger: 0
   RunInBackground: 1
   StartInOfflineMode: 0
   RpcList:
-  - CantHearYou
-  - ChangeColour
   - ClickRpc
   - DestroyRpc
   - DestroySpaceship
   - Fire
-  - HeresWhy
-  - RespawnSpaceship
-  - SetAnimatorBool
-  - SetAnimatorFloat
-  - SetSkin
-  - SetVoiceLevel
   - OnChat
-  - SetInGameType
-  - PlayGame
-  - ChatMessage
-  - setColor
-  - gameOver
-  - TriggerAnimation
+  - RespawnSpaceship
   - SetAnimBool
   - SetAnimFloat
   - SetAnimTrigger
   DisableAutoOpenWizard: 1
   ShowSettings: 1
-  DevRegionSetOnce: 1
+  DevRegionSetOnce: 0

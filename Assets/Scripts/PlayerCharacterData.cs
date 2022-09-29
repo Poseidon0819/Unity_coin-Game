@@ -42,7 +42,7 @@ namespace SurvivalEngine
         {
             this.player_id = int.Parse(data["player_id"].ToString());
             this.position.LoadSaveData(data["position"].ToString());
-            Debug.LogError(this.position);
+            // Debug.LogError(this.position);
             this.xp = int.Parse(data["xp"].ToString());
             this.gold = int.Parse(data["gold"].ToString());
 

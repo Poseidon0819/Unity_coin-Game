@@ -21,6 +21,7 @@ namespace SurvivalEngine {
         public UIPanel cold_fx;
         public Text build_mode_text;
         public Image tps_cursor;
+        public GameObject tradePanel;
 
         public UnityAction onCancelSelection;
 
@@ -148,7 +149,10 @@ namespace SurvivalEngine {
             if (onCancelSelection != null)
                 onCancelSelection.Invoke();
         }
-
+        public void OnClickBirdGang()
+        {
+            tradePanel.SetActive(true);
+        }
         public void OnClickCraft()
         {
             CancelSelection();

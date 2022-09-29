@@ -432,7 +432,7 @@ namespace SurvivalEngine
             form.AddField("user_id", GlobalManager.instance.userId);
             form.AddField("map_id", GlobalManager.instance.mapId);
             form.AddField("world_seed", this.world_seed.ToString());
-            Debug.LogError(this.world_seed.ToString());
+            // Debug.LogError(this.world_seed.ToString());
             form.AddField("current_entry_index", this.current_entry_index.ToString());
             form.AddField("day", this.day.ToString());
             form.AddField("day_time", this.day_time.ToString());
