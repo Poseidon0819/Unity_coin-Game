@@ -148,6 +148,11 @@ namespace SurvivalEngine
                 Debug.LogError("Player ID should be 0 or more: -1 is reserved to indicate neutral (no player)");
 
             this.userName.text = photonView.Controller.NickName;
+            this.ResetAttribute();
+        }
+
+        public void ResetAttribute()
+        {
             this.Attributes.ResetAttribute(AttributeType.Health);
             this.Attributes.ResetAttribute(AttributeType.Energy);
             this.Attributes.ResetAttribute(AttributeType.Happiness);

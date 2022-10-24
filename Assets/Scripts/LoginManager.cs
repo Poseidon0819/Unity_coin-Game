@@ -147,7 +147,7 @@ public class LoginManager : MonoBehaviourPunCallbacks
     void SetLoading(bool isLoading)
     {
         this.loginBtn.SetActive(!isLoading);
-        this.loginVisitorBtn.SetActive(!isLoading);
+        // this.loginVisitorBtn.SetActive(!isLoading);
         this.loading.SetActive(isLoading);
     }
     IEnumerator LoadData()

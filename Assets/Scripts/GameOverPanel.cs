@@ -40,6 +40,15 @@ namespace SurvivalEngine
             // StartCoroutine(NewRoutine());
         }
 
+        public void Respawn()
+        {
+            // PlayerCharacter.Get().ResetAttribute();
+            // this.Hide();
+            // PlayerCharacter.Get().Combat.is_dead = false;
+            GameObject.Destroy(GlobalManager.instance.gameObject);
+            UnityEngine.SceneManagement.SceneManager.LoadSceneAsync("LogIn");
+        }
+
         private IEnumerator LoadRoutine()
         {
             BlackPanel.Get().Show();

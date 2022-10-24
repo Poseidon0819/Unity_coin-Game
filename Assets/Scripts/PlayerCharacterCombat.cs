@@ -45,7 +45,7 @@ namespace SurvivalEngine
 
         private Coroutine attack_routine = null;
         private float attack_timer = 0f;
-        private bool is_dead = false;
+        public bool is_dead = false;
         private bool is_attacking = false;
 
         private void Awake()
