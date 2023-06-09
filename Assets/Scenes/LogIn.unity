@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657826, g: 0.49641263, b: 0.57481676, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -158,8 +158,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -0.5000019}
-  m_SizeDelta: {x: -20, y: -13}
+  m_AnchoredPosition: {x: 27.5, y: -0.5000019}
+  m_SizeDelta: {x: -75, y: -13}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &22542147
 MonoBehaviour:
@@ -232,6 +232,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e197493f20f78ec48810458a3e2823fb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  userIdInput: {fileID: 2009568476}
+  mapIdInput: {fileID: 22542147}
+  loginBtn: {fileID: 2128122117}
+  loginVisitorBtn: {fileID: 1722094817}
+  loading: {fileID: 39157797}
+  LoginUI: {fileID: 353314804}
+  RegUI: {fileID: 887909338}
+  loadingDesc: {fileID: 1099888872}
 --- !u!4 &23227156
 Transform:
   m_ObjectHideFlags: 0
@@ -298,6 +306,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7880a5fa955b0d448ba40cd06a067c67, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rotateSpeed: 0
 --- !u!114 &39157800
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -740,6 +749,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9567f2de9c0ab2d4294fb1e0e6e232cd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isTest: 1
+  userId: 
+  mapId: 
+  mapData: 
+  baseUrl: http://217.160.232.125:3000/
+  assetBaseUrl: https://s3.amazonaws.com/new-builder-server/asset_packs
+  getAssetListUrl: https://s3.amazonaws.com/new-builder-server/asset_packs
+  builderServerUrl: http://217.160.232.125:5000/
+  img: {fileID: 0}
+  saveingObjects: []
+  playMode: 0
 --- !u!4 &280331566
 Transform:
   m_ObjectHideFlags: 0
@@ -1419,6 +1439,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f231c4fb786f3946a6b90b886c48677, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_SendPointerHoverToParent: 1
   m_HorizontalAxis: Horizontal
   m_VerticalAxis: Vertical
   m_SubmitButton: Submit
@@ -1858,8 +1879,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -0.5}
-  m_SizeDelta: {x: -20, y: -13}
+  m_AnchoredPosition: {x: 27.5, y: -0.5}
+  m_SizeDelta: {x: -75, y: -13}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1773021457
 MonoBehaviour:
@@ -2569,6 +2590,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c55605a2a9e364c47825885f7b13d856, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  slot: 0
+  side: 0
+  scale: 1
 --- !u!33 &353400851623993184
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -2773,9 +2797,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f961f35f9bb61e459157c3282c7e75d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Radius: {x: 0, y: 0, z: 0}
+  Speed: 1
+  RandomStartup: 0
 --- !u!95 &773753447369281288
 Animator:
-  serializedVersion: 4
+  serializedVersion: 5
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -2792,7 +2819,8 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!4 &797826393631355065
 Transform:
   m_ObjectHideFlags: 0
@@ -3171,6 +3199,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c55605a2a9e364c47825885f7b13d856, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  slot: 0
+  side: 0
+  scale: 1
 --- !u!4 &1437216971131778437
 Transform:
   m_ObjectHideFlags: 0
@@ -3690,6 +3721,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c55605a2a9e364c47825885f7b13d856, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  slot: 0
+  side: 0
+  scale: 1
 --- !u!1 &2347273731693284049
 GameObject:
   m_ObjectHideFlags: 0
@@ -3799,6 +3833,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c55605a2a9e364c47825885f7b13d856, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  slot: 0
+  side: 0
+  scale: 1
 --- !u!1 &2621060696460257571
 GameObject:
   m_ObjectHideFlags: 0
@@ -5093,6 +5130,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c55605a2a9e364c47825885f7b13d856, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  slot: 0
+  side: 0
+  scale: 1
 --- !u!1 &4941878021570715085
 GameObject:
   m_ObjectHideFlags: 0
@@ -5548,6 +5588,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c55605a2a9e364c47825885f7b13d856, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  slot: 0
+  side: 0
+  scale: 1
 --- !u!1 &6046285545945645869
 GameObject:
   m_ObjectHideFlags: 0
@@ -5896,6 +5939,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c55605a2a9e364c47825885f7b13d856, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  slot: 0
+  side: 0
+  scale: 1
 --- !u!4 &6821343950575604876
 Transform:
   m_ObjectHideFlags: 0
@@ -6242,7 +6288,7 @@ Transform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &7759252840140869552
 Animator:
-  serializedVersion: 4
+  serializedVersion: 5
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -6259,7 +6305,8 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &7768703618387290018
 GameObject:
   m_ObjectHideFlags: 0
@@ -6421,6 +6468,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c55605a2a9e364c47825885f7b13d856, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  slot: 0
+  side: 0
+  scale: 1
 --- !u!1 &8090582510788191040
 GameObject:
   m_ObjectHideFlags: 0
@@ -6773,3 +6823,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c55605a2a9e364c47825885f7b13d856, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  slot: 0
+  side: 0
+  scale: 1
