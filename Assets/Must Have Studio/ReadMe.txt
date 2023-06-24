@@ -1,0 +1,2 @@
+- Project visualization (processing in HDRP) improved;
+- Fixed bugs.

@@ -27,6 +27,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -43,11 +44,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c3d12e7a29a615941aaf59ad4d015097, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  worldItems: []
   mode: 0
   seed: 2147483647
   map_size: 200
   nb_zones: 100
-  iterations: 1000
   biomes:
   - {fileID: 11400000, guid: 0efaeadf2a0b13a4fa6e5afab564605f, type: 2}
   - {fileID: 11400000, guid: 16919abcf8b604a4aa9d1b1995a06c73, type: 2}
@@ -57,6 +58,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 697d371ae686aa445b1046212d1433ea, type: 2}
   - {fileID: 11400000, guid: 9a1eb69289616034599d078de7ffb67e, type: 2}
   - {fileID: 11400000, guid: 522dfa6c1f15bf24fbc4d35091425fea, type: 2}
+  waterBiom: {fileID: 0}
+  iterations: 1000
   walls_mat: {fileID: 2100000, guid: 6fb8a9435e5bacf42a38884c512fc9de, type: 2}
   water_action: {fileID: 11400000, guid: 721446a73d648c84cb1af2d5cf79a7ce, type: 2}
   water_group: {fileID: 11400000, guid: 15f4b05f7c038a94f9c99789292d67fd, type: 2}
