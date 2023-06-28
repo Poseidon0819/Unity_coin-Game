@@ -55,7 +55,16 @@ public class EVM
         using (UnityWebRequest webRequest = UnityWebRequest.Post(url, form))
         {
             await webRequest.SendWebRequest();
-            Response<string> data = JsonUtility.FromJson<Response<string>>(System.Text.Encoding.UTF8.GetString(webRequest.downloadHandler.data));
+            string str = webRequest.downloadHandler.text;
+            Response<string> data;
+            if(str.Contains("Error: Invalid Project ID"))
+            {
+                return str;
+            }
+            else
+            {
+                data = JsonUtility.FromJson<Response<string>>(System.Text.Encoding.UTF8.GetString(webRequest.downloadHandler.data));
+            }
             return data.response;
         }
     }
