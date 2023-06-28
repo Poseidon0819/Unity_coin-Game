@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.3731193, g: 0.3807401, b: 0.358727, a: 1}
+  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -240,6 +240,7 @@ MonoBehaviour:
   LoginUI: {fileID: 353314804}
   RegUI: {fileID: 887909338}
   loadingDesc: {fileID: 1099888872}
+  transfer: {fileID: 0}
 --- !u!4 &23227156
 Transform:
   m_ObjectHideFlags: 0
@@ -879,10 +880,10 @@ MonoBehaviour:
   userId: 
   mapId: 
   mapData: 
-  baseUrl: http://217.160.232.125:3000/
+  baseUrl: https://birdyonline.info/
   assetBaseUrl: https://s3.amazonaws.com/new-builder-server/asset_packs
   getAssetListUrl: https://s3.amazonaws.com/new-builder-server/asset_packs
-  builderServerUrl: http://217.160.232.125:5000/
+  builderServerUrl: https://app.birdyonline.info/
   img: {fileID: 0}
   saveingObjects: []
   playMode: 0
@@ -1006,11 +1007,12 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2009568475}
-  - {fileID: 982996702}
-  - {fileID: 2128122118}
   - {fileID: 1722094821}
   - {fileID: 39157798}
+  - {fileID: 982996702}
   - {fileID: 1099888871}
+  - {fileID: 1494495535}
+  - {fileID: 2128122118}
   m_Father: {fileID: 127777525}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -6381,11 +6383,11 @@ RectTransform:
   - {fileID: 364769180}
   - {fileID: 22542146}
   m_Father: {fileID: 353314805}
-  m_RootOrder: 1
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: 0, y: -58}
+  m_AnchoredPosition: {x: 10, y: -75}
   m_SizeDelta: {x: 400, y: 40.706}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &982996704
@@ -11770,13 +11772,13 @@ RectTransform:
   m_Children:
   - {fileID: 26802542}
   - {fileID: 1821950036}
-  m_Father: {fileID: 2095174861}
-  m_RootOrder: 1
+  m_Father: {fileID: 353314805}
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchoredPosition: {x: -0.004852295, y: 38}
+  m_SizeDelta: {x: 1820.0099, y: 979.9999}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1537488761
 GameObject:
@@ -12272,8 +12274,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 27.5, y: -0.5}
-  m_SizeDelta: {x: -75, y: -13}
+  m_AnchoredPosition: {x: 27.753998, y: -0.5}
+  m_SizeDelta: {x: -75.509, y: -13}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1773021457
 MonoBehaviour:
@@ -12401,7 +12403,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1821950038}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 23227155}
+        m_TargetAssemblyTypeName: LoginManager, NavMeshComponents
+        m_MethodName: OnLoginNormal
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1821950038
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17578,7 +17592,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1937369709}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
   m_Name: 
@@ -17777,8 +17791,9 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 1d3b7c4686fbdd34fb753e0b848baed7, type: 3}
-  m_Type: 0
+  m_Sprite: {fileID: -2192968532387711199, guid: f78d6eb19e5b44152a71d2d3be9af0c8,
+    type: 3}
+  m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -17824,7 +17839,6 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1346705423}
-  - {fileID: 1494495535}
   m_Father: {fileID: 127777525}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -17884,7 +17898,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.5}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -17946,11 +17960,11 @@ RectTransform:
   m_Children:
   - {fileID: 1937369710}
   m_Father: {fileID: 353314805}
-  m_RootOrder: 2
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: 0, y: -121}
+  m_AnchoredPosition: {x: 0, y: -321}
   m_SizeDelta: {x: 181.937, y: 45.157}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2128122119
@@ -18016,7 +18030,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2128122117}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 

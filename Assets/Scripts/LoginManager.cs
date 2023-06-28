@@ -52,7 +52,7 @@ public class LoginManager : MonoBehaviourPunCallbacks
     }
     IEnumerator GetSelectedMapId()
     {
-        var url = GlobalManager.instance.baseUrl + "selectedmap?user_id=" + this.account;
+        var url = GlobalManager.instance.baseUrl + "map/getselected?user_id=" + this.account;
         while(true)
         {
             UnityWebRequest www = UnityWebRequest.Get(url);
