@@ -9,7 +9,7 @@ public class EVM
 {
     public class Response<T> { public T response; }
 
-    private readonly static string host = "https://api.gaming.chainsafe.io/evm";
+    private readonly static string host = "http://api.gaming.chainsafe.io/evm";
 
     public static async Task<string> BalanceOf(string _chain, string _network, string _account, string _rpc = "")
     {
