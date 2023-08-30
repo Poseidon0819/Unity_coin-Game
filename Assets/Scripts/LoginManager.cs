@@ -8,6 +8,13 @@ using SurvivalEngine;
 using System.Runtime.InteropServices;
 using Photon.Pun;
 using Photon.Realtime;
+using MetaMask.Unity;
+using System;
+using MetaMask.Models;
+using Nethereum.Web3;
+using Newtonsoft.Json;
+using System.IO;
+using System.Net.Http;
 
 public class LoginManager : MonoBehaviourPunCallbacks
 {
@@ -64,7 +71,7 @@ public class LoginManager : MonoBehaviourPunCallbacks
             }
             else
             {
-                Debug.LogError(www.downloadHandler.text);
+                Debug.Log(www.downloadHandler.text);
                 Dictionary<string, object> data = Json.Deserialize(www.downloadHandler.text) as Dictionary<string, object>;
                 if(data != null && data.ContainsKey("map_id"))
                 {
@@ -80,7 +87,7 @@ public class LoginManager : MonoBehaviourPunCallbacks
     IEnumerator GetUserInfo()
     {
         string url = GlobalManager.instance.baseUrl + "user/getInfo?id=" + this.account;
-        Debug.LogError(url);
+        Debug.Log(url);
         UnityWebRequest www = UnityWebRequest.Get(url);
         yield return www.SendWebRequest();
 
@@ -90,10 +97,11 @@ public class LoginManager : MonoBehaviourPunCallbacks
         }
         else
         {
-            Debug.LogError(www.downloadHandler.text);
+            Debug.Log(www.downloadHandler.text);
             if(www.downloadHandler.text != "") {
                 Dictionary<string, object> dicData = Json.Deserialize(www.downloadHandler.text) as Dictionary<string, object>;
-                if(dicData["user_name"] != null)
+                if (dicData["user_name"] != null)
+                    Debug.Log("User Data: " + JsonConvert.SerializeObject(dicData));
                     userIdInput.text = dicData["user_name"].ToString();
             }
             this.RegUI.SetActive(false);
@@ -130,19 +138,36 @@ public class LoginManager : MonoBehaviourPunCallbacks
 
     async void CheckLandOwner()
     {
-        string chain = "ethereum";
-        string network = "mainnet";
-        string contract = "0xc09d1aa618ae8a4b54c5ac60efb394d38bf79d03";
-        string tokenId = this.mapIdInput.text;
+        Debug.Log("Check Land Owner");
+        string contract = "0xc09D1aa618AE8A4b54C5ac60Efb394D38bf79D03";
+        int tokenId = int.Parse(this.mapIdInput.text);
+        TextAsset contractAbiAsset = (TextAsset)Resources.Load("birdezkingdom");
+        string contractAbi = contractAbiAsset.text;
+        var web3 = new Web3("https://mainnet.infura.io/v3/9551122820a547af8fe10bb16cc1c5dd");
+        var contractData = web3.Eth.GetContract(contractAbi, contract);
 
+        var ownerOfFunction = contractData.GetFunction("ownerOf");
+        string owner = await ownerOfFunction.CallAsync<string>(tokenId);
+
+        if (this.account.ToLower() == owner.ToLower())
+        {
+            GlobalManager.instance.playMode = PlayMode.Owner;
+        }
+        else
+        {
+            GlobalManager.instance.playMode = PlayMode.Guest;
+        }
+
+        /*
         string ownerOf = await ERC721.OwnerOf(chain, network, contract, tokenId);
         ownerOf = ownerOf.ToLower();
-        if(this.account == ownerOf) {
+        Debug.Log("Owner Of: " + ownerOf);
+        if (this.account == ownerOf) {
             GlobalManager.instance.playMode = PlayMode.Owner;
         } else {
             GlobalManager.instance.playMode = PlayMode.Guest;
         }
-        // Debug.LogError(ownerOf);
+        */
     }
     void SetLoading(bool isLoading)
     {
@@ -175,14 +200,14 @@ public class LoginManager : MonoBehaviourPunCallbacks
             }
             else
             {
-                Debug.LogError(www.downloadHandler.text);
+                Debug.Log(www.downloadHandler.text);
                 if(www.downloadHandler.text.Length < 3) {
                     this.SetLoading(false);
                     break;
                 } else {
                     while(true) {
                         url = GlobalManager.instance.baseUrl + "world/getWorlds?user_id=" + this.account + "&user_name=" + this.userIdInput.text + "&map_id=" + this.mapIdInput.text;
-                        Debug.LogError(url);
+                        Debug.Log(url);
                         GlobalManager.instance.userId = this.account;
                         GlobalManager.instance.mapId = this.mapIdInput.text;
                         GlobalManager.instance.mapData = www.downloadHandler.text;
@@ -201,7 +226,7 @@ public class LoginManager : MonoBehaviourPunCallbacks
                         }
                         else
                         {
-                            Debug.LogError(www.downloadHandler.text);
+                            Debug.Log(www.downloadHandler.text);
                             List<object> listData = Json.Deserialize(www.downloadHandler.text) as List<object>;
                             PlayerData.player_data = new PlayerData();
                             if(listData != null && listData.Count > 0) {
@@ -276,6 +301,7 @@ public class LoginManager : MonoBehaviourPunCallbacks
 
     public void OnWalletConnect()
     {
+        /*
         if(GlobalManager.instance.isTest) {
             this.account = "0x0241d725f8bd03188f9f4c8ff92efbb6791c860f";
             // this.account = "0xfa455c51CF7605E6E4695D6426A81765DB9c44fE";
@@ -285,10 +311,20 @@ public class LoginManager : MonoBehaviourPunCallbacks
             Web3Connect();
             OnConnectedWallet();
         }
+        */
+        MetaMaskUnity.Instance.Initialize();
+
+        var wallet = MetaMaskUnity.Instance.Wallet;
+        wallet.Connect();
+        wallet.WalletConnectedHandler += OnWalletConnected;
+        wallet.WalletReadyHandler += OnWalletReady;
+        wallet.WalletAuthorizedHandler += OnWalletAuthrized;
     }
 
-    async private void OnConnectedWallet()
+    private void OnWalletConnected(object sender, EventArgs e)
     {
+        Debug.Log("Wallet is connected");
+        /*
         account = ConnectAccount();
         while (account == "")
         {
@@ -299,7 +335,24 @@ public class LoginManager : MonoBehaviourPunCallbacks
         PlayerPrefs.SetString("PlayerAddress", account);
         Debug.Log("Wallet Address:" + account);
         StartCoroutine(GetSelectedMapId());
+        */
     }
+
+    private void OnWalletReady(object sender, EventArgs e)
+    {
+        Debug.Log("Wallet is Ready");
+        var wallet = (MetaMask.MetaMaskWallet)sender;
+        Debug.Log("Selected Address: " + wallet.SelectedAddress);
+        PlayerPrefs.SetString("PlayerAddress", wallet.SelectedAddress);
+        this.account = wallet.SelectedAddress;
+        StartCoroutine(GetSelectedMapId());
+    }
+
+    private void OnWalletAuthrized(object sender, EventArgs e)
+    {
+        Debug.Log("Wallet is Authorized");
+    }
+
     void ConnectToPhoton()
     {
         Debug.LogError("ConnectToPhoton");

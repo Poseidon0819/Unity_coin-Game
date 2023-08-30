@@ -33,10 +33,10 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 82769496068439470}
-  - {fileID: 1099653739585000716}
-  - {fileID: 7322742034027070852}
-  - {fileID: 1347054505006168043}
+  - {fileID: 52533523035675483}
+  - {fileID: 6662278441161574163}
+  - {fileID: 6930629181165490058}
+  - {fileID: 6386581020611568461}
   - {fileID: 299465438958282154}
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -175,7 +175,7 @@ MonoBehaviour:
   m_ClearGrassBounds: {x: 1500, y: 1, z: 1500}
   m_ShowDebugs: 0
   m_ShowGizmos: 1
---- !u!1 &4177615324287869318
+--- !u!1 &3333370429509569929
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -183,8 +183,8 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 7322742034027070852}
-  - component: {fileID: 8068084775312093234}
+  - component: {fileID: 52533523035675483}
+  - component: {fileID: 4700176903840753046}
   m_Layer: 15
   m_Name: Building Socket (Wall, Foundation)
   m_TagString: Untagged
@@ -192,13 +192,71 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &7322742034027070852
+--- !u!4 &52533523035675483
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4177615324287869318}
+  m_GameObject: {fileID: 3333370429509569929}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -1.25, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 254036700996818261}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4700176903840753046
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3333370429509569929}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8de37d035f129bb428c26276cf0b5a10, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SnappingPoints:
+  - m_MatchBy: 1
+    m_BuildingPart: {fileID: 7990950198401023037}
+    m_Type: Foundation
+    m_Position: {x: -1.25, y: 0, z: 0}
+    m_Rotation: {x: 0, y: -90, z: 0}
+    m_Scale: {x: 1, y: 1, z: 1}
+  - m_MatchBy: 1
+    m_BuildingPart: {fileID: 0}
+    m_Type: Wall
+    m_Position: {x: 0, y: 0, z: 0}
+    m_Rotation: {x: 0, y: -90, z: 0}
+    m_Scale: {x: 1, y: 1, z: 1}
+  m_SocketRadius: 0.25
+--- !u!1 &7200398147065980358
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6930629181165490058}
+  - component: {fileID: 3000649267979084795}
+  m_Layer: 15
+  m_Name: Building Socket (Wall, Foundation)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6930629181165490058
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7200398147065980358}
   m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
   m_LocalPosition: {x: 1.25, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -207,13 +265,13 @@ Transform:
   m_Father: {fileID: 254036700996818261}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
---- !u!114 &8068084775312093234
+--- !u!114 &3000649267979084795
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4177615324287869318}
+  m_GameObject: {fileID: 7200398147065980358}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8de37d035f129bb428c26276cf0b5a10, type: 3}
@@ -233,7 +291,7 @@ MonoBehaviour:
     m_Rotation: {x: 0, y: 0, z: 0}
     m_Scale: {x: 1, y: 1, z: 1}
   m_SocketRadius: 0.25
---- !u!1 &5235146217512165029
+--- !u!1 &7314749530360715732
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -241,8 +299,8 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 1099653739585000716}
-  - component: {fileID: 319932380715133203}
+  - component: {fileID: 6386581020611568461}
+  - component: {fileID: 4187620707427025398}
   m_Layer: 15
   m_Name: Building Socket (Wall, Foundation)
   m_TagString: Untagged
@@ -250,72 +308,13 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &1099653739585000716
+--- !u!4 &6386581020611568461
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5235146217512165029}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 1.25}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 254036700996818261}
-  m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &319932380715133203
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5235146217512165029}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8de37d035f129bb428c26276cf0b5a10, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_SnappingPoints:
-  - m_MatchBy: 1
-    m_BuildingPart: {fileID: 7990950198401023037}
-    m_Type: Foundation
-    m_Position: {x: 0, y: 0, z: 1.25}
-    m_Rotation: {x: 0, y: 0, z: 0}
-    m_Scale: {x: 1, y: 1, z: 1}
-  - m_MatchBy: 1
-    m_BuildingPart: {fileID: 5922851360953957637, guid: 6e2154020fb4afd42939f2c13ecb1282,
-      type: 3}
-    m_Type: Wall
-    m_Position: {x: 0, y: 0, z: 0}
-    m_Rotation: {x: 0, y: 0, z: 0}
-    m_Scale: {x: 1, y: 1, z: 1}
-  m_SocketRadius: 0.25
---- !u!1 &6046237886323875790
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1347054505006168043}
-  - component: {fileID: 8714154510290287655}
-  m_Layer: 15
-  m_Name: Building Socket (Wall, Foundation)
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1347054505006168043
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6046237886323875790}
+  m_GameObject: {fileID: 7314749530360715732}
   m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 0, z: -1.25}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -324,13 +323,13 @@ Transform:
   m_Father: {fileID: 254036700996818261}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
---- !u!114 &8714154510290287655
+--- !u!114 &4187620707427025398
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6046237886323875790}
+  m_GameObject: {fileID: 7314749530360715732}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8de37d035f129bb428c26276cf0b5a10, type: 3}
@@ -350,7 +349,7 @@ MonoBehaviour:
     m_Rotation: {x: 0, y: 90, z: 0}
     m_Scale: {x: 1, y: 1, z: 1}
   m_SocketRadius: 0.25
---- !u!1 &6124731787591390912
+--- !u!1 &7515540437291710402
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -358,8 +357,8 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 82769496068439470}
-  - component: {fileID: 2660941649719679390}
+  - component: {fileID: 6662278441161574163}
+  - component: {fileID: 2660544477159715171}
   m_Layer: 15
   m_Name: Building Socket (Wall, Foundation)
   m_TagString: Untagged
@@ -367,28 +366,28 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &82769496068439470
+--- !u!4 &6662278441161574163
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6124731787591390912}
+  m_GameObject: {fileID: 7515540437291710402}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.25, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 1.25}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 254036700996818261}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2660941649719679390
+--- !u!114 &2660544477159715171
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6124731787591390912}
+  m_GameObject: {fileID: 7515540437291710402}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8de37d035f129bb428c26276cf0b5a10, type: 3}
@@ -398,14 +397,15 @@ MonoBehaviour:
   - m_MatchBy: 1
     m_BuildingPart: {fileID: 7990950198401023037}
     m_Type: Foundation
-    m_Position: {x: -1.25, y: 0, z: 0}
-    m_Rotation: {x: 0, y: -90, z: 0}
+    m_Position: {x: 0, y: 0, z: 1.25}
+    m_Rotation: {x: 0, y: 0, z: 0}
     m_Scale: {x: 1, y: 1, z: 1}
   - m_MatchBy: 1
-    m_BuildingPart: {fileID: 0}
+    m_BuildingPart: {fileID: 5922851360953957637, guid: 6e2154020fb4afd42939f2c13ecb1282,
+      type: 3}
     m_Type: Wall
     m_Position: {x: 0, y: 0, z: 0}
-    m_Rotation: {x: 0, y: -90, z: 0}
+    m_Rotation: {x: 0, y: 0, z: 0}
     m_Scale: {x: 1, y: 1, z: 1}
   m_SocketRadius: 0.25
 --- !u!1 &7772683334408293728
